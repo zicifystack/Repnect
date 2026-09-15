@@ -24,10 +24,13 @@
 		"db:generate": "drizzle-kit generate",
 		"db:migrate": "drizzle-kit migrate",
 		"db:studio": "drizzle-kit studio",
-		"auth:schema": "auth generate --config src/lib/server/auth.ts --output src/lib/server/db/auth.schema.ts --yes"
+		"auth:schema": "auth generate --config src/lib/server/auth.ts --output src/lib/server/db/auth.schema.ts --yes",
+		"deploy": "wrangler pages deploy .svelte-kit/cloudflare",
+		"deploy:ci": "wrangler pages deploy .svelte-kit/cloudflare --yes"
 	},
 	"devDependencies": {
 		"@cloudflare/workers-types": "^5.20260914.1",
+		"wrangler": "^3.100.0",
 		"@eslint/js": "^10.0.1",
 		"@internationalized/date": "^3.12.4",
 		"@lucide/svelte": "^1.45.0",
