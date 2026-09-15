@@ -1,5 +1,5 @@
 import type { Handle } from '@sveltejs/kit';
-import { SESSION_SECRET } from '$env/static/private';
+import { env } from '$env/dynamic/private';
 import type { AuthUser, GitHubSession } from '$lib/types';
 
 async function hmacVerify(payload: string, signature: string, secret: string): Promise<boolean> {
@@ -21,13 +21,15 @@ export const handle: Handle = async ({ event, resolve }) => {
 	const raw = event.cookies.get('gh_session');
 	event.locals.user = null;
 
-	if (raw && SESSION_SECRET) {
+	const sessionSecret = env.SESSION_SECRET || (event.platform?.env as Record<string, string> | undefined)?.SESSION_SECRET;
+
+	if (raw && sessionSecret) {
 		try {
 			const lastDot = raw.lastIndexOf('.');
 			if (lastDot !== -1) {
 				const payload = raw.slice(0, lastDot);
 				const sig = raw.slice(lastDot + 1);
-				const valid = await hmacVerify(payload, sig, SESSION_SECRET);
+				const valid = await hmacVerify(payload, sig, sessionSecret);
 				if (valid) {
 					const session: GitHubSession = JSON.parse(atob(payload));
 					if (Date.now() <= session.expires_at) {

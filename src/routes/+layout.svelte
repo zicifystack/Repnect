@@ -3,13 +3,13 @@
 	import favicon from '$lib/assets/favicon.svg';
 	import { setTheme } from '$lib/theme.svelte.js';
 	import Header from '$lib/components/Header.svelte';
-	import {
-		PUBLIC_VERCEL_ANALYTICS,
-		PUBLIC_VERCEL_SPEED_INSIGHTS,
-		PUBLIC_GA_MEASUREMENT_ID
-	} from '$env/static/public';
+	import { env } from '$env/dynamic/public';
 
 	let { children } = $props();
+
+	const vercelAnalytics = env.PUBLIC_VERCEL_ANALYTICS;
+	const vercelSpeedInsights = env.PUBLIC_VERCEL_SPEED_INSIGHTS;
+	const gaMeasurementId = env.PUBLIC_GA_MEASUREMENT_ID;
 
 	$effect(() => {
 		const saved = localStorage.getItem('theme');
@@ -29,6 +29,7 @@
 				'@type': 'WebSite',
 				name: 'Repnect',
 				url: 'https://repnect.dev',
+				dialog: 'SearchAction',
 				potentialAction: {
 					'@type': 'SearchAction',
 					target: 'https://repnect.dev/?q={search_term_string}',
@@ -43,8 +44,8 @@
 	const jsonLdTag = `\x3cscript type="application/ld+json">${orgJsonLd}\x3c/script>`;
 	const vercelAnalyticsTag = '\x3cscript async src="/_vercel/insights/script.js">\x3c/script>';
 	const vercelSpeedTag = '\x3cscript async src="/_vercel/speed-insights/script.js">\x3c/script>';
-	const gaTag = PUBLIC_GA_MEASUREMENT_ID
-		? `\x3cscript async src="https://www.googletagmanager.com/gtag/js?id=${PUBLIC_GA_MEASUREMENT_ID}">\x3c/script>`
+	const gaTag = gaMeasurementId
+		? `\x3cscript async src="https://www.googletagmanager.com/gtag/js?id=${gaMeasurementId}">\x3c/script>`
 		: '';
 </script>
 
@@ -52,15 +53,15 @@
 	<link rel="icon" href={favicon} />
 	<!-- eslint-disable-next-line svelte/no-at-html-tags -->
 	{@html jsonLdTag}
-	{#if PUBLIC_VERCEL_ANALYTICS === 'true'}
+	{#if vercelAnalytics === 'true'}
 		<!-- eslint-disable-next-line svelte/no-at-html-tags -->
 		{@html vercelAnalyticsTag}
 	{/if}
-	{#if PUBLIC_VERCEL_SPEED_INSIGHTS === 'true'}
+	{#if vercelSpeedInsights === 'true'}
 		<!-- eslint-disable-next-line svelte/no-at-html-tags -->
 		{@html vercelSpeedTag}
 	{/if}
-	{#if PUBLIC_GA_MEASUREMENT_ID}
+	{#if gaMeasurementId}
 		<!-- eslint-disable-next-line svelte/no-at-html-tags -->
 		{@html gaTag}
 	{/if}

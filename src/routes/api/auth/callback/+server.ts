@@ -1,6 +1,6 @@
 import type { RequestHandler } from './$types';
 import { redirect } from '@sveltejs/kit';
-import { GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET, SESSION_SECRET } from '$env/static/private';
+import { env } from '$env/dynamic/private';
 import type { GitHubSession } from '$lib/types';
 
 async function hmacSign(payload: string, secret: string): Promise<string> {
@@ -10,17 +10,22 @@ async function hmacSign(payload: string, secret: string): Promise<string> {
   return btoa(String.fromCharCode(...new Uint8Array(sig)));
 }
 
-export const GET: RequestHandler = async ({ url, cookies }) => {
+export const GET: RequestHandler = async ({ url, cookies, platform }) => {
+  const platformEnv = platform?.env as Record<string, string> | undefined;
+  const githubClientId = env.GITHUB_CLIENT_ID || platformEnv?.GITHUB_CLIENT_ID;
+  const githubClientSecret = env.GITHUB_CLIENT_SECRET || platformEnv?.GITHUB_CLIENT_SECRET;
+  const sessionSecret = env.SESSION_SECRET || platformEnv?.SESSION_SECRET;
+
   const code = url.searchParams.get('code');
   const state = url.searchParams.get('state');
   const storedState = cookies.get('oauth_state');
-  if (!code || !state || state !== storedState) redirect(302, '/?error=auth_failed');
+  if (!code || !state || state !== storedState || !sessionSecret) redirect(302, '/?error=auth_failed');
   cookies.delete('oauth_state', { path: '/' });
   try {
     const tokenRes = await fetch('https://github.com/login/oauth/access_token', {
       method: 'POST',
       headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
-      body: JSON.stringify({ client_id: GITHUB_CLIENT_ID, client_secret: GITHUB_CLIENT_SECRET, code }),
+      body: JSON.stringify({ client_id: githubClientId, client_secret: githubClientSecret, code }),
     });
     const tokenData = await tokenRes.json() as { access_token?: string };
     if (!tokenData.access_token) redirect(302, '/?error=auth_failed');
@@ -35,7 +40,7 @@ export const GET: RequestHandler = async ({ url, cookies }) => {
       expires_at: Date.now() + 8 * 60 * 60 * 1000,
     };
     const payload = btoa(JSON.stringify(session));
-    const sig = await hmacSign(payload, SESSION_SECRET);
+    const sig = await hmacSign(payload, sessionSecret);
     cookies.set('gh_session', `${payload}.${sig}`, { path: '/', httpOnly: true, sameSite: 'lax', secure: true, maxAge: 28800 });
     redirect(302, '/');
   } catch { redirect(302, '/?error=auth_failed'); }
