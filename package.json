@@ -24,6 +24,12 @@
 		"db:generate": "drizzle-kit generate",
 		"db:migrate": "drizzle-kit migrate",
 		"db:studio": "drizzle-kit studio",
+		"db:create": "wrangler d1 create repnect-db",
+		"db:migrate:local": "wrangler d1 migrations apply repnect-db --local",
+		"db:migrate:remote": "wrangler d1 migrations apply repnect-db --remote",
+		"db:list": "wrangler d1 list",
+		"db:execute:local": "wrangler d1 execute repnect-db --local --command",
+		"db:execute:remote": "wrangler d1 execute repnect-db --remote --command",
 		"auth:schema": "auth generate --config src/lib/server/auth.ts --output src/lib/server/db/auth.schema.ts --yes",
 		"deploy": "wrangler pages deploy .svelte-kit/cloudflare",
 		"deploy:ci": "wrangler pages deploy .svelte-kit/cloudflare --yes"
@@ -72,7 +78,6 @@
 	},
 	"dependencies": {
 		"@resvg/resvg-js": "^2.6.2",
-		"better-sqlite3": "^13.0.2",
 		"fuse.js": "^7.5.0",
 		"satori": "^0.33.4",
 		"smol-toml": "^1.8.0",
