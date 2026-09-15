@@ -1,6 +1,7 @@
 import type { Handle } from '@sveltejs/kit';
 import { env } from '$env/dynamic/private';
 import type { AuthUser, GitHubSession } from '$lib/types';
+import { getDb } from '$lib/server/db';
 
 async function hmacVerify(payload: string, signature: string, secret: string): Promise<boolean> {
 	if (!secret) return false;
@@ -17,7 +18,11 @@ async function hmacVerify(payload: string, signature: string, secret: string): P
 }
 
 export const handle: Handle = async ({ event, resolve }) => {
-	// Read the custom gh_session cookie set by /api/auth/callback
+	const d1 = event.platform?.env.DB;
+	if (d1) {
+		event.locals.db = getDb(d1);
+	}
+
 	const raw = event.cookies.get('gh_session');
 	event.locals.user = null;
 
