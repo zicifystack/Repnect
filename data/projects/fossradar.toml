@@ -1,0 +1,20 @@
+slug = "fossradar"
+name = "FOSSRadar"
+short_desc = "A Git-powered, database-free directory for Nigeria-focused open-source projects, built with SvelteKit and Svelte 5."
+repo = "https://github.com/wbfoss/fossradar"
+license = "MIT"
+added_at = "2025-01-01"
+primary_lang = "TypeScript"
+category = "developer-tools"
+tags = ["svelte", "sveltekit", "typescript", "open-source", "directory", "nigeria"]
+looking_for_contributors = true
+location_city = "Bengaluru"
+location_nigerian_state = "Karnataka"
+
+# Optional fields
+website = "https://fossradar.dev"
+good_first_issues = 5
+stars = 0
+verified = false
+nigeria_connection = "founder"
+nigeria_connection_details = "Founded and maintained by the WBFoss community, an Nigeria-based open-source collective."

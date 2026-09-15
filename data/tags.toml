@@ -1,0 +1,102 @@
+tags = [
+  # Languages & Runtimes
+  "typescript",
+  "javascript",
+  "python",
+  "rust",
+  "go",
+  "java",
+  "kotlin",
+  "swift",
+  "c",
+  "cpp",
+  "dart",
+  "elixir",
+  "ruby",
+  "php",
+
+  # Frontend
+  "svelte",
+  "sveltekit",
+  "react",
+  "nextjs",
+  "vue",
+  "nuxt",
+  "angular",
+  "tailwindcss",
+  "webcomponents",
+
+  # Backend & APIs
+  "nodejs",
+  "express",
+  "fastapi",
+  "django",
+  "flask",
+  "graphql",
+  "rest-api",
+  "grpc",
+  "websocket",
+
+  # Mobile
+  "android",
+  "ios",
+  "flutter",
+  "react-native",
+
+  # Data & AI
+  "machine-learning",
+  "deep-learning",
+  "nlp",
+  "computer-vision",
+  "llm",
+  "pytorch",
+  "tensorflow",
+  "data-science",
+  "analytics",
+
+  # Infrastructure & DevOps
+  "docker",
+  "kubernetes",
+  "terraform",
+  "github-actions",
+  "ci-cd",
+  "monitoring",
+  "cli",
+
+  # Database
+  "postgresql",
+  "mysql",
+  "sqlite",
+  "mongodb",
+  "redis",
+  "vector-database",
+
+  # Security & Auth
+  "authentication",
+  "oauth",
+  "encryption",
+  "security",
+
+  # General
+  "open-source",
+  "nigeria",
+  "education",
+  "accessibility",
+  "documentation",
+  "testing",
+  "api",
+  "sdk",
+  "library",
+  "framework",
+  "saas",
+  "selfhosted",
+  "pwa",
+  "real-time",
+  "serverless",
+  "blockchain",
+  "iot",
+  "game",
+  "finance",
+  "health",
+  "community",
+]

@@ -1,0 +1,18 @@
+name = "repnect"
+compatibility_date = "2025-01-01"
+compatibility_flags = ["nodejs_compat"]
+
+# SvelteKit Cloudflare adapter output directory
+pages_build_output_dir = ".svelte-kit/cloudflare"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "repnect-db"
+database_id = "YOUR_D1_DATABASE_ID"  # Replace after: wrangler d1 create repnect-db
+
+[vars]
+# Public runtime vars (use wrangler secret put for private ones)
+# SESSION_SECRET, GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET are set via:
+#   wrangler secret put SESSION_SECRET
+#   wrangler secret put GITHUB_CLIENT_ID
+#   wrangler secret put GITHUB_CLIENT_SECRET

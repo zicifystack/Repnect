@@ -1,0 +1,64 @@
+{
+  "categories": {
+    "developer-tools": {
+      "label": "Developer Tools",
+      "description": "CLIs, SDKs, build tools, linters, formatters, code generators, and other utilities that improve developer workflows.",
+      "icon": "wrench"
+    },
+    "web": {
+      "label": "Web",
+      "description": "Frameworks, libraries, CMSes, and full-stack applications targeting the web platform.",
+      "icon": "globe"
+    },
+    "mobile": {
+      "label": "Mobile",
+      "description": "Android, iOS, and cross-platform mobile apps and frameworks.",
+      "icon": "smartphone"
+    },
+    "ai-ml": {
+      "label": "AI / ML",
+      "description": "Machine learning models, inference engines, training frameworks, datasets, and AI-powered applications.",
+      "icon": "brain"
+    },
+    "data": {
+      "label": "Data",
+      "description": "Databases, data pipelines, analytics platforms, visualisation tools, and ETL utilities.",
+      "icon": "database"
+    },
+    "security": {
+      "label": "Security",
+      "description": "Vulnerability scanners, authentication libraries, cryptography tools, and privacy-focused projects.",
+      "icon": "shield"
+    },
+    "devops": {
+      "label": "DevOps",
+      "description": "CI/CD pipelines, container orchestration, infrastructure-as-code, monitoring, and deployment tools.",
+      "icon": "server"
+    },
+    "education": {
+      "label": "Education",
+      "description": "Learning platforms, interactive tutorials, coding challenges, and open educational resources.",
+      "icon": "graduation-cap"
+    },
+    "finance": {
+      "label": "Finance",
+      "description": "Personal finance, accounting, payments, fintech APIs, and trading tools.",
+      "icon": "nigerian-rupee"
+    },
+    "health": {
+      "label": "Health",
+      "description": "Healthcare platforms, medical record systems, fitness trackers, and wellness apps.",
+      "icon": "heart-pulse"
+    },
+    "productivity": {
+      "label": "Productivity",
+      "description": "Task managers, note-taking apps, calendars, communication tools, and workflow automation.",
+      "icon": "calendar-check"
+    },
+    "gaming": {
+      "label": "Gaming",
+      "description": "Game engines, game mods, tooling for game developers, and open-source games.",
+      "icon": "gamepad-2"
+    }
+  }
+}
