@@ -2,6 +2,7 @@ import type { PageServerLoad } from './$types';
 import { readFileSync, existsSync } from 'fs';
 import { join } from 'path';
 import type { SearchIndexItem } from '$lib/schema';
+import { loadCities } from '$lib/server/cities';
 
 export const load: PageServerLoad = async () => {
   const indexPath = join(process.cwd(), 'public', 'index.json');
@@ -28,5 +29,7 @@ export const load: PageServerLoad = async () => {
     }
   }
 
-  return { searchIndex, categories };
+  const { cities, featured: featuredCities } = loadCities();
+
+  return { searchIndex, categories, cities, featuredCities };
 };

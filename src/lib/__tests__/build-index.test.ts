@@ -17,8 +17,8 @@ const makeProject = (overrides: Partial<Project> = {}): Project => ({
 	category: 'tools',
 	tags: ['testing'],
 	looking_for_contributors: false,
-	location_city: 'Mumbai',
-	location_nigerian_state: 'Maharashtra',
+	location_city: 'Lagos',
+	location_nigerian_state: 'Lagos State',
 	stars: 0,
 	good_first_issues: 0,
 	verified: false,
@@ -42,8 +42,8 @@ describe('buildIndex – field mapping', () => {
 			verified: true,
 			added_at: '2023-06-15',
 			looking_for_contributors: true,
-			location_city: 'Bengaluru',
-			location_nigerian_state: 'Karnataka'
+			location_city: 'Lagos',
+			location_nigerian_state: 'Lagos State'
 		});
 
 		const [item] = buildIndex([project]);
@@ -58,8 +58,8 @@ describe('buildIndex – field mapping', () => {
 		expect(item.verified).toBe(true);
 		expect(item.added_at).toBe('2023-06-15');
 		expect(item.looking_for_contributors).toBe(true);
-		expect(item.location_city).toBe('Bengaluru');
-		expect(item.location_nigerian_state).toBe('Karnataka');
+		expect(item.location_city).toBe('Lagos');
+		expect(item.location_nigerian_state).toBe('Lagos State');
 	});
 
 	it('defaults stars to 0 when project.stars is undefined', () => {

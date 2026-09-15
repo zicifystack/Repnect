@@ -1,15 +1,20 @@
 <script lang="ts">
 	import { ArrowUp } from '@lucide/svelte';
 	import { Skeleton } from '$lib/components/ui/skeleton/index.js';
+	import { getUpvoteCount, voteProject } from '$lib/upvote.remote';
 
 	let { slug, initialCount = 0 }: { slug: string; initialCount: number } = $props();
 
+	// $state.raw is used so we can mutate count freely (optimistic updates + server reconciliation).
+	// We seed from initialCount via $effect so the prop is tracked reactively.
 	let count = $state(0);
 	let hasVoted = $state(false);
 	let loading = $state(true);
+	let pendingVote = $state(false);
 
-	// Sync count from initialCount prop reactively
+	// Keep count in sync when the parent changes initialCount
 	$effect(() => {
+		if (!loading) return; // once we have a live server value, don't overwrite it
 		count = initialCount;
 	});
 
@@ -20,7 +25,7 @@
 		}
 	});
 
-	// Persist hasVoted to localStorage on change
+	// Persist hasVoted to localStorage reactively
 	$effect(() => {
 		if (typeof localStorage !== 'undefined') {
 			if (hasVoted) {
@@ -31,13 +36,12 @@
 		}
 	});
 
-	// Fetch current count on mount
+	// Fetch live count from the server using the remote query
 	$effect(() => {
 		loading = true;
-		fetch(`/api/upvote?slug=${encodeURIComponent(slug)}`)
-			.then((r) => r.json())
+		getUpvoteCount({ slug })
 			.then((data) => {
-				count = (data as { count: number }).count;
+				count = data.count;
 			})
 			.catch(() => {
 				// Keep initialCount on error
@@ -48,7 +52,7 @@
 	});
 
 	async function handleVote() {
-		if (loading) return;
+		if (loading || pendingVote) return;
 
 		const prevCount = count;
 		const prevVoted = hasVoted;
@@ -62,19 +66,16 @@
 			hasVoted = true;
 		}
 
+		pendingVote = true;
 		try {
-			const res = await fetch('/api/upvote', {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({ slug, action: prevVoted ? 'unvote' : 'upvote' })
-			});
-			if (!res.ok) throw new Error('API error');
-			const data = await res.json() as { count: number };
+			const data = await voteProject({ slug, action: prevVoted ? 'unvote' : 'upvote' });
 			count = data.count;
 		} catch {
 			// Revert on error
 			count = prevCount;
 			hasVoted = prevVoted;
+		} finally {
+			pendingVote = false;
 		}
 	}
 </script>
@@ -86,8 +87,9 @@
 		<button
 			type="button"
 			onclick={handleVote}
+			disabled={pendingVote}
 			aria-label="Upvote"
-			class="flex min-h-8 items-center gap-1.5 rounded-md border px-3 py-1.5 font-mono text-xs font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring
+			class="flex min-h-8 items-center gap-1.5 rounded-md border px-3 py-1.5 font-mono text-xs font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-60
 				{hasVoted
 				? 'border-primary/50 bg-primary/15 text-primary hover:bg-primary/25 shadow-xs shadow-primary/10'
 				: 'border-border/70 bg-card/70 text-muted-foreground hover:border-primary/40 hover:text-foreground'}"

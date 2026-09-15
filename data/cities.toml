@@ -1,0 +1,34 @@
+# Curated list of major Nigerian cities for search, browsing, and submissions
+
+cities = [
+  "Lagos",
+  "Abuja",
+  "Port Harcourt",
+  "Kano",
+  "Ibadan",
+  "Enugu",
+  "Benin City",
+  "Kaduna",
+  "Jos",
+  "Calabar",
+  "Warri",
+  "Abeokuta",
+  "Owerri",
+  "Uyo",
+  "Akure",
+  "Ilorin",
+  "Zaria",
+  "Maiduguri",
+  "Asaba",
+  "Minna"
+]
+
+# Cities featured on the homepage directory browser
+featured = [
+  "Lagos",
+  "Abuja",
+  "Port Harcourt",
+  "Kano",
+  "Ibadan",
+  "Enugu"
+]

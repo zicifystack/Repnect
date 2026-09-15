@@ -400,7 +400,7 @@
 							<label class="text-sm font-medium text-foreground" for="city-input">City</label>
 							<Input
 								id="city-input"
-								placeholder="Bangalore"
+								placeholder="Lagos"
 								value={formData.location_city ?? ''}
 								oninput={(e) => (formData = { ...formData, location_city: (e.currentTarget as HTMLInputElement).value })}
 							/>
@@ -410,7 +410,7 @@
 							<label class="text-sm font-medium text-foreground" for="state-input">State</label>
 							<Input
 								id="state-input"
-								placeholder="Karnataka"
+								placeholder="Lagos State"
 								value={formData.location_nigerian_state ?? ''}
 								oninput={(e) =>
 									(formData = { ...formData, location_nigerian_state: (e.currentTarget as HTMLInputElement).value })}

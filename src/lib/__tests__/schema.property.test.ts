@@ -19,8 +19,8 @@ const validProject = {
 	category: 'tools',
 	tags: ['open-source'],
 	looking_for_contributors: false,
-	location_city: 'Mumbai',
-	location_nigerian_state: 'Maharashtra'
+	location_city: 'Lagos',
+	location_nigerian_state: 'Lagos State'
 };
 
 // ---------------------------------------------------------------------------

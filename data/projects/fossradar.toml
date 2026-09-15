@@ -8,8 +8,8 @@ primary_lang = "TypeScript"
 category = "developer-tools"
 tags = ["svelte", "sveltekit", "typescript", "open-source", "directory", "nigeria"]
 looking_for_contributors = true
-location_city = "Bengaluru"
-location_nigerian_state = "Karnataka"
+location_city = "Lagos"
+location_nigerian_state = "Lagos State"
 
 # Optional fields
 website = "https://fossradar.dev"
@@ -17,4 +17,4 @@ good_first_issues = 5
 stars = 0
 verified = false
 nigeria_connection = "founder"
-nigeria_connection_details = "Founded and maintained by the WBFoss community, an Nigeria-based open-source collective."
+nigeria_connection_details = "Founded and maintained by the WBFoss community, a Nigeria-based open-source collective."

@@ -22,6 +22,7 @@
 	}));
 
 	const scriptTag = $derived(`\x3cscript type="application/ld+json">${orgJsonLd}\x3c/script>`);
+	const browseCities = $derived(data.featuredCities?.length ? data.featuredCities : ['Lagos', 'Abuja', 'Port Harcourt', 'Kano', 'Ibadan', 'Enugu']);
 </script>
 
 <svelte:head>
@@ -50,7 +51,7 @@
 
 <!-- Hero -->
 <section class="relative overflow-hidden border-b border-border bg-grid-pattern px-4 py-16 sm:px-6 sm:py-24">
-	<div class="pointer-events-none absolute inset-0 bg-radial-maroon"></div>
+	<div class="pointer-events-none absolute inset-0 bg-radial-green"></div>
 	<div class="relative mx-auto max-w-3xl text-center">
 		<Badge variant="outline" class="mb-4 gap-1.5 border-primary/30 bg-primary/10 px-3 py-1 font-mono text-xs text-primary rounded-md shadow-xs">
 			<Rocket class="size-3.5" />
@@ -136,7 +137,7 @@
 			<div>
 				<h3 class="mb-3 font-mono text-xs uppercase tracking-wider text-muted-foreground">Browse by City</h3>
 				<ul class="flex flex-col gap-1.5 font-mono text-xs">
-					{#each ['Bangalore', 'Mumbai', 'Delhi', 'Pune', 'Hyderabad', 'Chennai'] as city (city)}
+					{#each browseCities as city (city)}
 						<li>
 							<a href="/?city={city}" class="text-muted-foreground hover:text-primary transition-colors">{city}</a>
 						</li>

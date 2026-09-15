@@ -1,9 +1,25 @@
 // Feature: fosswe-svelte-rebuild
 // Component tests for ProjectUpvote: loading state, optimistic update, revert on error
+//
+// Since ProjectUpvote now uses remote functions ($lib/upvote.remote) instead of
+// raw fetch, we mock the remote module with vi.mock so that tests remain fast
+// and isolated from the Cloudflare D1 / server environment.
 
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { render, screen, fireEvent, waitFor, cleanup } from '@testing-library/svelte';
+
+// Mock the remote module BEFORE importing the component.
+// This intercepts calls to getUpvoteCount / voteProject in the test environment.
+vi.mock('$lib/upvote.remote', () => ({
+	getUpvoteCount: vi.fn(),
+	voteProject: vi.fn()
+}));
+
 import ProjectUpvote from '../components/ProjectUpvote.svelte';
+import { getUpvoteCount, voteProject } from '$lib/upvote.remote';
+
+const mockGetCount = vi.mocked(getUpvoteCount);
+const mockVote = vi.mocked(voteProject);
 
 // Stub localStorage
 const localStorageMock = (() => {
@@ -19,12 +35,9 @@ const localStorageMock = (() => {
 Object.defineProperty(globalThis, 'localStorage', { value: localStorageMock, writable: true });
 
 describe('ProjectUpvote', () => {
-	let fetchMock: ReturnType<typeof vi.fn>;
-
 	beforeEach(() => {
 		localStorageMock.clear();
-		fetchMock = vi.fn();
-		globalThis.fetch = fetchMock as unknown as typeof fetch;
+		vi.clearAllMocks();
 	});
 
 	afterEach(() => {
@@ -34,7 +47,8 @@ describe('ProjectUpvote', () => {
 
 	it('shows loading skeleton on initial render before fetch completes', () => {
 		// Never resolves — simulates loading
-		fetchMock.mockReturnValue(new Promise(() => {}));
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		mockGetCount.mockReturnValue(new Promise(() => {}) as any);
 
 		render(ProjectUpvote, { props: { slug: 'test-slug', initialCount: 5 } });
 
@@ -42,11 +56,9 @@ describe('ProjectUpvote', () => {
 		expect(screen.queryByRole('button', { name: /upvote/i })).toBeNull();
 	});
 
-	it('shows upvote button after fetch resolves', async () => {
-		fetchMock.mockResolvedValue({
-			ok: true,
-			json: async () => ({ count: 7 })
-		});
+	it('shows upvote button after remote query resolves', async () => {
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		mockGetCount.mockResolvedValue({ slug: 'test-slug', count: 7 } as any);
 
 		render(ProjectUpvote, { props: { slug: 'test-slug', initialCount: 5 } });
 
@@ -56,10 +68,8 @@ describe('ProjectUpvote', () => {
 	});
 
 	it('displays fetched count after load', async () => {
-		fetchMock.mockResolvedValue({
-			ok: true,
-			json: async () => ({ count: 99 })
-		});
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		mockGetCount.mockResolvedValue({ slug: 'test-slug', count: 99 } as any);
 
 		render(ProjectUpvote, { props: { slug: 'test-slug', initialCount: 0 } });
 
@@ -69,11 +79,10 @@ describe('ProjectUpvote', () => {
 	});
 
 	it('optimistically increments count on click', async () => {
-		// First call: GET (initial fetch)
-		// Second call: POST (upvote)
-		fetchMock
-			.mockResolvedValueOnce({ ok: true, json: async () => ({ count: 10 }) })
-			.mockResolvedValueOnce({ ok: true, json: async () => ({ count: 11, action: 'upvote' }) });
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		mockGetCount.mockResolvedValue({ slug: 'test-slug', count: 10 } as any);
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		mockVote.mockResolvedValue({ slug: 'test-slug', count: 11, action: 'upvote' } as any);
 
 		render(ProjectUpvote, { props: { slug: 'test-slug', initialCount: 10 } });
 
@@ -82,16 +91,16 @@ describe('ProjectUpvote', () => {
 		const btn = screen.getByRole('button', { name: /upvote/i });
 		await fireEvent.click(btn);
 
-		// After optimistic update, count should be 11
+		// After optimistic update + server confirmation, count should be 11
 		await waitFor(() => {
 			expect(screen.getByText('11')).toBeTruthy();
 		});
 	});
 
-	it('reverts count and localStorage on API error', async () => {
-		fetchMock
-			.mockResolvedValueOnce({ ok: true, json: async () => ({ count: 5 }) })
-			.mockResolvedValueOnce({ ok: false }); // POST fails
+	it('reverts count and localStorage on command error', async () => {
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		mockGetCount.mockResolvedValue({ slug: 'err-slug', count: 5 } as any);
+		mockVote.mockRejectedValue(new Error('Network error'));
 
 		render(ProjectUpvote, { props: { slug: 'err-slug', initialCount: 5 } });
 

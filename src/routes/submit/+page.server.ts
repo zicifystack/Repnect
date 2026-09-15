@@ -1,6 +1,7 @@
 import type { PageServerLoad } from './$types';
 import { readFileSync, existsSync } from 'fs';
 import { join } from 'path';
+import { loadCities } from '$lib/server/cities';
 
 export const load: PageServerLoad = async () => {
 	const categoriesPath = join(process.cwd(), 'data', 'categories.json');
@@ -19,5 +20,7 @@ export const load: PageServerLoad = async () => {
 		}
 	}
 
-	return { categories };
+	const { cities } = loadCities();
+
+	return { categories, cities };
 };

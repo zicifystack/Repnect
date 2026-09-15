@@ -60,8 +60,8 @@ const repnectBase = {
 	category: 'tools',
 	tags: ['open-source'] as string[],
 	looking_for_contributors: false,
-	location_city: 'Mumbai',
-	location_nigerian_state: 'Maharashtra',
+	location_city: 'Lagos',
+	location_nigerian_state: 'Lagos State',
 	stars: 0,
 	verified: false,
 	good_first_issues: 0

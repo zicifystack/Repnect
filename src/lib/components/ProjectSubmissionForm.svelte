@@ -41,8 +41,8 @@
 	let tags = $state<string[]>(['open-source', 'developer-tools']);
 	let tagInput = $state('');
 	let lookingForContributors = $state(true);
-	let locationCity = $state('Bengaluru');
-	let locationNigerianState = $state('Karnataka');
+	let locationCity = $state('Lagos');
+	let locationNigerianState = $state('Lagos State');
 
 	// Optional Fields
 	let website = $state('');
@@ -58,12 +58,14 @@
 	let copied = $state(false);
 
 	const NigeriaN_STATES = [
-		'Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh',
-		'Delhi', 'Goa', 'Gujarat', 'Haryana', 'Himachal Pradesh',
-		'Jharkhand', 'Karnataka', 'Kerala', 'Madhya Pradesh', 'Maharashtra',
-		'Manipur', 'Meghalaya', 'Mizoram', 'Nagaland', 'Odisha',
-		'Punjab', 'Rajasthan', 'Sikkim', 'Tamil Nadu', 'Telangana',
-		'Tripura', 'Uttar Pradesh', 'Uttarakhand', 'West Bengal', 'Chandigarh', 'Puducherry'
+		'Abia', 'Adamawa', 'Akwa Ibom', 'Anambra', 'Bauchi',
+		'Bayelsa', 'Benue', 'Borno', 'Cross River', 'Delta',
+		'Ebonyi', 'Edo', 'Ekiti', 'Enugu', 'FCT (Abuja)',
+		'Gombe', 'Imo', 'Jigawa', 'Kaduna', 'Kano',
+		'Katsina', 'Kebbi', 'Kogi', 'Kwara', 'Lagos State',
+		'Nasarawa', 'Niger', 'Ogun', 'Ondo', 'Osun',
+		'Oyo', 'Plateau', 'Rivers', 'Sokoto', 'Taraba',
+		'Yobe', 'Zamfara'
 	];
 
 	const COMMON_LICENSES = ['MIT', 'Apache-2.0', 'GPL-3.0', 'AGPL-3.0', 'BSD-2-Clause', 'BSD-3-Clause', 'MPL-2.0', 'ISC', 'Unlicense'];
@@ -213,8 +215,8 @@
 		const tagList = tags.length > 0 ? tags : ['open-source'];
 		lines.push(`tags = [${tagList.map((t) => `"${t}"`).join(', ')}]`);
 		lines.push(`looking_for_contributors = ${lookingForContributors}`);
-		lines.push(`location_city = "${locationCity.replace(/"/g, '\\"') || 'Bengaluru'}"`);
-		lines.push(`location_nigerian_state = "${locationNigerianState.replace(/"/g, '\\"') || 'Karnataka'}"`);
+		lines.push(`location_city = "${locationCity.replace(/"/g, '\\"') || 'Lagos'}"`);
+		lines.push(`location_nigerian_state = "${locationNigerianState.replace(/"/g, '\\"') || 'Lagos State'}"`);
 
 		// Optional block
 		const optionals: string[] = [];
@@ -547,7 +549,7 @@
 						<Input
 							id="project-city"
 							type="text"
-							placeholder="e.g. Bengaluru"
+							placeholder="e.g. Lagos"
 							bind:value={locationCity}
 							class="font-mono text-xs bg-muted/20 border-border/70"
 						/>
@@ -555,7 +557,7 @@
 
 					<div class="flex flex-col gap-1.5">
 						<label class="text-xs font-mono font-medium text-foreground" for="project-state">
-							Nigerian State / UT *
+							Nigerian State *
 						</label>
 						<select
 							id="project-state"
@@ -635,7 +637,7 @@
 								<textarea
 									id="nigeria-details"
 									rows="2"
-									placeholder="e.g. Founded and actively maintained by developers based in Bengaluru."
+									placeholder="e.g. Founded and actively maintained by developers based in Lagos."
 									bind:value={nigeriaConnectionDetails}
 									class="w-full rounded-md border border-border/70 bg-muted/20 px-3 py-2 text-xs text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
 								></textarea>

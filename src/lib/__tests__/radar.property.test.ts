@@ -19,7 +19,7 @@ const projectArbitrary: fc.Arbitrary<Project> = fc.record({
   tags: fc.array(fc.constantFrom('web', 'cli'), { minLength: 1, maxLength: 3 }),
   looking_for_contributors: fc.boolean(),
   location_city: fc.string({ minLength: 2, maxLength: 50 }).map(s => s.replace(/[^\x20-\x7E]/g, 'a').padEnd(2, 'a')),
-  location_nigerian_state: fc.constantFrom('Maharashtra', 'Karnataka', 'Delhi', 'Tamil Nadu'),
+  location_nigerian_state: fc.constantFrom('Lagos State', 'Rivers', 'Kano', 'FCT (Abuja)'),
   stars: fc.nat(1000),
   good_first_issues: fc.nat(100),
   verified: fc.boolean(),

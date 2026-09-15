@@ -112,9 +112,9 @@
 
 <BreadcrumbSchema crumbs={breadcrumbs} />
 
-<!-- Hero Header with Tweakcn Maroon developer theme -->
+<!-- Hero Header with Nigerian Green developer theme -->
 <section class="relative overflow-hidden border-b border-border bg-grid-pattern px-4 py-12 sm:px-6 sm:py-16">
-	<div class="pointer-events-none absolute inset-0 bg-radial-maroon"></div>
+	<div class="pointer-events-none absolute inset-0 bg-radial-green"></div>
 	<div class="relative mx-auto max-w-4xl text-center">
 		<Badge variant="outline" class="mb-4 gap-1.5 border-primary/30 bg-primary/10 px-3 py-1 font-mono text-xs text-primary rounded-md">
 			<Sparkles class="size-3.5" />
