@@ -1,0 +1,15 @@
+slug = "repnect"
+name = "Repnect"
+short_desc = "Repnect is a curated, Git-powered directory of open source projects with a strong Nigerian connection — founded by Nigerians, built by Nigerian contributors."
+repo = "https://github.com/zicifystack/Repnect"
+license = "MIT"
+added_at = "2026-09-16"
+primary_lang = "Svelte"
+category = "developer-tools"
+tags = ["open-source", "developer-tools"]
+looking_for_contributors = true
+location_city = "Lagos"
+location_nigerian_state = "Lagos State"
+
+# Optional fields
+nigeria_connection = "founder"
