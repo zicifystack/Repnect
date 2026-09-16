@@ -1,0 +1,21 @@
+{
+	"name": "repnect",
+	"compatibility_date": "2025-01-01",
+	"compatibility_flags": ["nodejs_compat"],
+	"main": ".svelte-kit/cloudflare/_worker.js",
+	"assets": {
+		"binding": "ASSETS",
+		"directory": ".svelte-kit/cloudflare"
+	},
+	"secrets": {
+		"required": ["BETTER_AUTH_SECRET", "SESSION_SECRET"]
+	},
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "repnect-db",
+			"database_id": "YOUR_D1_DATABASE_ID",
+			"migrations_dir": "drizzle"
+		}
+	]
+}

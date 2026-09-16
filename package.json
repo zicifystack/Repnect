@@ -25,14 +25,15 @@
 		"db:migrate": "drizzle-kit migrate",
 		"db:studio": "drizzle-kit studio",
 		"db:create": "wrangler d1 create repnect-db",
-		"db:migrate:local": "wrangler d1 migrations apply repnect-db --local",
-		"db:migrate:remote": "wrangler d1 migrations apply repnect-db --remote",
+		"db:migrate:local": "wrangler d1 migrations apply DB --local",
+		"db:migrate:remote": "wrangler d1 migrations apply DB --remote",
 		"db:list": "wrangler d1 list",
 		"db:execute:local": "wrangler d1 execute repnect-db --local --command",
 		"db:execute:remote": "wrangler d1 execute repnect-db --remote --command",
 		"auth:schema": "auth generate --config src/lib/server/auth.ts --output src/lib/server/db/auth.schema.ts --yes",
-		"deploy": "wrangler pages deploy .svelte-kit/cloudflare",
-		"deploy:ci": "wrangler pages deploy .svelte-kit/cloudflare --yes"
+		"deploy": "pnpm build && wrangler deploy",
+		"deploy:ci": "pnpm build && wrangler deploy --yes",
+		"gen": "wrangler types"
 	},
 	"devDependencies": {
 		"@cloudflare/workers-types": "^5.20260914.1",

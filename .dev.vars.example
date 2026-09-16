@@ -1,0 +1,5 @@
+BETTER_AUTH_SECRET=replace-with-at-least-32-random-characters
+SESSION_SECRET=replace-with-at-least-32-random-characters
+GITHUB_CLIENT_ID=
+GITHUB_CLIENT_SECRET=
+GITHUB_TOKEN=
