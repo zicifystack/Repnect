@@ -1,10 +1,10 @@
 import satori from 'satori';
-import { Resvg } from '@resvg/resvg-js';
 
 let interFontCache: ArrayBuffer | null = null;
 
 async function loadInterFont(): Promise<ArrayBuffer> {
 	if (interFontCache) return interFontCache;
+	// Try local file first, fall back to Google Fonts CDN
 	try {
 		const { readFileSync } = await import('fs');
 		const { join } = await import('path');
@@ -21,19 +21,21 @@ async function loadInterFont(): Promise<ArrayBuffer> {
 	return interFontCache;
 }
 
+/**
+ * Renders an OG image as SVG using satori.
+ * Returns the SVG string — compatible with Cloudflare Workers (no native binaries required).
+ * To convert to PNG locally, use @resvg/resvg-js outside of the worker context.
+ */
 export async function renderOgImage(
 	element: object,
 	width: number,
 	height: number
-): Promise<Uint8Array> {
+): Promise<string> {
 	const fontData = await loadInterFont();
 
-	const svg = await satori(element as Parameters<typeof satori>[0], {
+	return satori(element as Parameters<typeof satori>[0], {
 		width,
 		height,
 		fonts: [{ name: 'Inter', data: fontData, weight: 400, style: 'normal' }],
 	});
-
-	const resvg = new Resvg(svg, { fitTo: { mode: 'width', value: width } });
-	return resvg.render().asPng();
 }
