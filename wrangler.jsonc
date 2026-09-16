@@ -7,9 +7,6 @@
 		"binding": "ASSETS",
 		"directory": ".svelte-kit/cloudflare"
 	},
-	"secrets": {
-		"required": ["BETTER_AUTH_SECRET", "SESSION_SECRET"]
-	},
 	"d1_databases": [
 		{
 			"binding": "DB",

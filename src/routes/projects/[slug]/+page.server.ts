@@ -1,16 +1,10 @@
-import type { PageServerLoad, EntryGenerator } from './$types';
+import type { PageServerLoad } from './$types';
 import { error } from '@sveltejs/kit';
 import { loadAllProjects, getProjectBySlug } from '$lib/projects';
 import { findSimilarProjects } from '$lib/similar';
 import { readFileSync, existsSync } from 'fs';
 import { join } from 'path';
 import type { CacheData } from '$lib/types';
-
-export const prerender = true;
-
-export const entries: EntryGenerator = () => {
-  return loadAllProjects().map((p) => ({ slug: p.slug }));
-};
 
 export const load: PageServerLoad = async ({ params }) => {
   const project = getProjectBySlug(params.slug);
