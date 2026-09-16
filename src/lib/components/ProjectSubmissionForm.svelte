@@ -272,7 +272,7 @@
 	const githubWebEditUrl = $derived.by(() => {
 		const filename = `data/projects/${slug || 'project'}.toml`;
 		const encodedVal = encodeURIComponent(generatedToml);
-		return `https://github.com/wbfoss/repnect/new/main?filename=${filename}&value=${encodedVal}`;
+		return `https://github.com/zicifystack/repnect/new/main?filename=${filename}&value=${encodedVal}`;
 	});
 </script>
 
@@ -762,7 +762,7 @@
 			<ol class="space-y-1.5 font-mono text-xs text-muted-foreground list-decimal list-inside">
 				<li>Fill in or autofill repository details</li>
 				<li>Click <strong class="text-foreground">Create PR on GitHub</strong> or download the file</li>
-				<li>Submit pull request to <code class="text-foreground">wbfoss/repnect</code></li>
+				<li>Submit pull request to <code class="text-foreground">zicifystack/repnect</code></li>
 				<li>CI validates the schema & merges upon review</li>
 			</ol>
 		</Card>

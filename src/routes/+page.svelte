@@ -106,7 +106,7 @@
 	<div class="relative mx-auto max-w-3xl text-center">
 		<div class="mb-3 inline-flex items-center gap-2 rounded-md border border-primary/20 bg-primary/5 px-2.5 py-1 font-mono text-xs text-primary">
 			<Code2 class="size-3.5" />
-			<span>git clone https://github.com/wbfoss/repnect</span>
+			<span>git clone https://github.com/zicifystack/repnect</span>
 		</div>
 		<h2 class="mb-3 text-2xl font-bold text-foreground">Built by the community</h2>
 		<p class="mb-6 text-muted-foreground">
@@ -114,7 +114,7 @@
 		</p>
 		<div class="flex flex-col items-center justify-center gap-3 sm:flex-row">
 			<a
-				href="https://github.com/wbfoss/repnect"
+				href="https://github.com/zicifystack/repnect"
 				target="_blank"
 				rel="noopener noreferrer"
 			>

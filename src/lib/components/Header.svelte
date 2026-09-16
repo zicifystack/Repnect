@@ -44,7 +44,7 @@
 			{/each}
 			<!-- Feedback — hidden on mobile -->
 			<a
-				href="https://github.com/wbfoss/repnect/issues"
+				href="https://github.com/zicifystack/repnect/issues"
 				target="_blank"
 				rel="noopener noreferrer"
 				class="hidden rounded-md px-3 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground md:inline-flex"
@@ -113,7 +113,7 @@
 					</a>
 				{/each}
 				<a
-					href="https://github.com/wbfoss/repnect/issues"
+					href="https://github.com/zicifystack/repnect/issues"
 					target="_blank"
 					rel="noopener noreferrer"
 					class="rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"

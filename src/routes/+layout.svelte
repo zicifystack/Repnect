@@ -77,7 +77,7 @@
 		<nav aria-label="Footer navigation" class="flex gap-4">
 			<a href="/about" class="hover:text-foreground">About</a>
 			<a href="/submit" class="hover:text-foreground">Submit</a>
-			<a href="https://github.com/wbfoss/repnect" target="_blank" rel="noopener noreferrer" class="hover:text-foreground">GitHub</a>
+			<a href="https://github.com/zicifystack/repnect" target="_blank" rel="noopener noreferrer" class="hover:text-foreground">GitHub</a>
 		</nav>
 	</div>
 </footer>

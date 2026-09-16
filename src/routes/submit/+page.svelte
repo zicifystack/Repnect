@@ -51,7 +51,7 @@
 
 	const steps = [
 		{ num: '01', title: 'Generate your TOML', desc: 'Use the interactive form below to generate and validate your .toml entry.' },
-		{ num: '02', title: 'Fork the repository', desc: 'Fork github.com/wbfoss/repnect to your GitHub account.' },
+		{ num: '02', title: 'Fork the repository', desc: 'Fork github.com/zicifystack/repnect to your GitHub account.' },
 		{ num: '03', title: 'Add to data/projects/', desc: 'Place your file at data/projects/your-slug.toml with all required fields.' },
 		{ num: '04', title: 'Add your logo (optional)', desc: 'Place a logo (SVG, PNG, JPG/JPEG, or WebP, ≤ 200 KB) in public/logos/.' },
 		{ num: '05', title: 'Add the Repnect badge', desc: 'Add the Repnect badge or "repnect" GitHub topic to get verified.' },
@@ -213,7 +213,7 @@
 					Switch to TOML Generator
 				</Button>
 				<a
-					href="https://github.com/wbfoss/repnect"
+					href="https://github.com/zicifystack/repnect"
 					target="_blank"
 					rel="noopener noreferrer"
 					class="flex-1"

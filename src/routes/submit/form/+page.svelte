@@ -508,7 +508,7 @@
 								Sign in with GitHub to auto-create a PR, or follow the manual workflow:
 							</p>
 							<ol class="list-inside list-decimal space-y-1 text-sm text-muted-foreground">
-								<li>Fork <code class="font-mono text-xs">github.com/wbfoss/repnect</code></li>
+								<li>Fork <code class="font-mono text-xs">github.com/zicifystack/repnect</code></li>
 								<li>
 									Create <code class="font-mono text-xs">data/projects/{formData.slug ?? 'your-slug'}.toml</code>
 									with the content above

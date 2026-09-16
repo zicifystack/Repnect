@@ -143,7 +143,7 @@
 				<ArrowRight class="size-4" />
 			</Button>
 		</a>
-		<a href="https://github.com/wbfoss/repnect" target="_blank" rel="noopener noreferrer">
+		<a href="https://github.com/zicifystack/repnect" target="_blank" rel="noopener noreferrer">
 			<Button variant="outline" class="gap-2">
 				<Code2 class="size-4" />
 				View on GitHub
