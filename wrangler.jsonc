@@ -1,6 +1,6 @@
 {
 	"name": "repnect",
-	"compatibility_date": "2025-01-01",
+	"compatibility_date": "2025-06-01",
 	"compatibility_flags": ["nodejs_compat"],
 	"main": ".svelte-kit/cloudflare/_worker.js",
 	"assets": {
@@ -11,7 +11,7 @@
 		{
 			"binding": "DB",
 			"database_name": "repnect-db",
-			"database_id": "YOUR_D1_DATABASE_ID",
+			"database_id": "b5ed8c8d-b620-41b1-bdc4-da62668dd6ab",
 			"migrations_dir": "drizzle"
 		}
 	]
