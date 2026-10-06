@@ -13,6 +13,8 @@
 	let menuOpen = $state(false);
 
 	const navLinks = [
+		{ href: resolve('/directory'), label: 'Directory' },
+		{ href: resolve('/submit'), label: 'Submit' },
 		{ href: resolve('/blog'), label: m.blog_short() },
 		{ href: resolve('/pricing'), label: m.pricing_short() }
 	];

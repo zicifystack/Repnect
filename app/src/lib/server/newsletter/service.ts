@@ -36,7 +36,10 @@ export async function subscribe(
 
 	await verifyTurnstile(env, captchaToken, ip);
 
-	const { success } = await env.RATE_LIMITER.limit({ key: `newsletter:${ip}` });
+	const limiter = env.RATE_LIMITER
+		? { limit: (key: string) => env.RATE_LIMITER!.limit({ key }) }
+		: ctx.rateLimiter;
+	const { success } = await limiter.limit(`newsletter:${ip}`);
 	if (!success) throw new AppError('rate_limited', 'Too many requests');
 
 	const [existing] = await ctx.db
@@ -60,7 +63,8 @@ export async function subscribe(
 		});
 
 	const url = `${origin}/newsletter/confirm?token=${token}`;
-	ctx.waitUntil(sendEmail(env, newsletterConfirmEmail(email, url)));
+	const emailMsg = newsletterConfirmEmail(email, url);
+	ctx.waitUntil(ctx.mailer ? ctx.mailer.send(emailMsg) : sendEmail(env, emailMsg));
 }
 
 export async function confirm(ctx: Ctx, token: string | null | undefined): Promise<void> {

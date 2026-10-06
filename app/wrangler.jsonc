@@ -40,8 +40,15 @@
 	// "workflows": [
 	// 	{ "binding": "EXAMPLE_WORKFLOW", "name": "example", "class_name": "ExampleWorkflow" }
 	// ],
-	// "kv_namespaces": [{ "binding": "KV", "id": "__KV_ID__" }],
-	// "r2_buckets": [{ "binding": "R2", "bucket_name": "__BUCKET_NAME__" }],
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "repnect-db",
+			"database_id": "__D1_DATABASE_ID__"
+		}
+	],
+	"kv_namespaces": [{ "binding": "KV", "id": "__KV_ID__" }],
+	"r2_buckets": [{ "binding": "R2", "bucket_name": "__BUCKET_NAME__" }],
 	"ratelimits": [
 		{
 			"name": "RATE_LIMITER",
@@ -57,10 +64,16 @@
 				"id": "__PREVIEW_HYPERDRIVE_ID__",
 				"localConnectionString": "postgresql://postgres:postgres@localhost:5432/app"
 			}
-		]
-		// "kv_namespaces": [{ "binding": "KV", "id": "<preview-kv-id>" }],
-		// "r2_buckets": [{ "binding": "R2", "bucket_name": "preview-bucket" }],
-		// "durable_objects": { "bindings": [{ "name": "COUNTER", "class_name": "Counter" }] }
+		],
+		"d1_databases": [
+			{
+				"binding": "DB",
+				"database_name": "preview-repnect-db",
+				"database_id": "__PREVIEW_D1_DATABASE_ID__"
+			}
+		],
+		"kv_namespaces": [{ "binding": "KV", "id": "<preview-kv-id>" }],
+		"r2_buckets": [{ "binding": "R2", "bucket_name": "preview-bucket" }]
 	}
 	// "ai": { "binding": "AI" }
 	// "send_email": [{ "name": "EMAIL" }],

@@ -37,6 +37,8 @@ declare global {
 	interface Env {
 		BETTER_AUTH_SECRET?: string;
 		HYPERDRIVE_CACHED?: Hyperdrive;
+		DB?: D1Database;
+		RATE_LIMITER?: { limit(options: { key: string }): Promise<{ success: boolean }> };
 		EXAMPLE_WORKFLOW?: Workflow<import('$lib/server/workflows/example').ExamplePayload>;
 		KV?: KVNamespace;
 		R2?: R2Bucket;
@@ -62,6 +64,7 @@ declare global {
 		PUBLIC_POSTHOG_HOST?: string;
 		REALTIME_SECRET?: string;
 		PUBLIC_REALTIME_URL?: string;
+		SYNC_SECRET?: string;
 	}
 }
 

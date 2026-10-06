@@ -1,0 +1,30 @@
+name: sync-directory
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'data/projects/**'
+  schedule:
+    - cron: '0 6 * * *'
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Run Directory Sync
+        env:
+          API_URL: ${{ secrets.PRODUCTION_URL || 'https://repnect.com' }}
+          SYNC_SECRET: ${{ secrets.SYNC_SECRET }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          cd app
+          node scripts/sync-directory.mjs

@@ -1,0 +1,25 @@
+id: flutterwave-v3
+name: "Flutterwave Node.js SDK"
+description: "Official Node.js SDK for Flutterwave v3 API with full support for card charges, mobile money, and virtual accounts across Africa."
+website_url: https://flutterwave.com
+github_repo: Flutterwave/Node-v3
+category: fintech
+tags:
+  - nodejs
+  - payments
+  - typescript
+  - africa
+
+# Location
+location_city: Lagos
+location_state: Lagos
+
+# Nigeria connection
+nigeria_connection: founder
+nigeria_connection_details: "Founded in Lagos, Nigeria powering payments for millions of African businesses."
+
+# Auto-updated fields
+stars: 198
+good_first_issues: 2
+verified: true
+updated_at: 2026-10-06T00:00:00Z
