@@ -233,22 +233,22 @@
 									{/if}
 								</div>
 
-							<div class="mt-1 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
-								<span class="font-medium text-link">{item.category}</span>
-								<span>•</span>
-								<span>{item.location_city}, {item.location_state}</span>
-							</div>
+								<div class="mt-1 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+									<span class="font-medium text-link">{item.category}</span>
+									<span>•</span>
+									<span>{item.location_city}, {item.location_state}</span>
+								</div>
 
-							<p class="mt-3 line-clamp-3 text-sm text-muted-foreground">
-								{item.description}
-							</p>
+								<p class="mt-3 line-clamp-3 text-sm text-muted-foreground">
+									{item.description}
+								</p>
 
-							<div class="mt-3 rounded-md bg-muted/50 p-2 text-xs">
-								<span class="font-medium text-foreground">Nigeria connection:</span>
-								<span class="text-muted-foreground ml-1">
-									{item.nigeria_connection_details || item.nigeria_connection}
-								</span>
-							</div>
+								<div class="mt-3 rounded-md bg-muted/50 p-2 text-xs">
+									<span class="font-medium text-foreground">Nigeria connection:</span>
+									<span class="text-muted-foreground ml-1">
+										{item.nigeria_connection_details || item.nigeria_connection}
+									</span>
+								</div>
 
 								{#if item.tags.length > 0}
 									<div class="mt-3 flex flex-wrap gap-1.5">
@@ -262,38 +262,39 @@
 							</div>
 
 							<div class="mt-5 flex items-center justify-between border-t border-border pt-4 text-xs text-muted-foreground">
-							<div class="flex items-center gap-3">
-								{#if item.stars > 0}
-									<span class="flex items-center gap-1 font-medium text-foreground">
-										★ {item.stars}
-									</span>
-								{/if}
-								{#if item.good_first_issues > 0}
-									<span class="rounded-sm bg-primary-500/10 px-1.5 py-0.5 text-link">
-										{item.good_first_issues} issues
-									</span>
-								{/if}
-							</div>
+								<div class="flex items-center gap-3">
+									{#if item.stars > 0}
+										<span class="flex items-center gap-1 font-medium text-foreground">
+											★ {item.stars}
+										</span>
+									{/if}
+									{#if item.good_first_issues > 0}
+										<span class="rounded-sm bg-primary-500/10 px-1.5 py-0.5 text-link">
+											{item.good_first_issues} issues
+										</span>
+									{/if}
+								</div>
 
-							<div class="flex items-center gap-2">
-								{#if item.github_repo}
+								<div class="flex items-center gap-2">
+									{#if item.github_repo}
+										<a
+											href={`https://github.com/${item.github_repo}`}
+											target="_blank"
+											rel="noreferrer"
+											class="hover:text-foreground hover:underline"
+										>
+											GitHub
+										</a>
+									{/if}
 									<a
-										href={`https://github.com/${item.github_repo}`}
+										href={item.website_url}
 										target="_blank"
 										rel="noreferrer"
-										class="hover:text-foreground hover:underline"
+										class="font-medium text-link hover:underline"
 									>
-										GitHub
+										Visit ↗
 									</a>
-								{/if}
-								<a
-									href={item.website_url}
-									target="_blank"
-									rel="noreferrer"
-									class="font-medium text-link hover:underline"
-								>
-									Visit ↗
-								</a>
+								</div>
 							</div>
 						</div>
 					</div>

@@ -15,12 +15,24 @@
 	let websiteUrl = $state('');
 	let logoUrl = $state('');
 	let githubRepo = $state('');
-	let category = $state(data.categories[0]);
+	let category = $state('');
 	let tags = $state('');
 	let locationCity = $state('Lagos');
 	let locationState = $state('Lagos');
-	let nigeriaConnection = $state(data.connections[0]);
+	let nigeriaConnection = $state('');
 	let connectionDetails = $state('');
+
+	$effect(() => {
+		if (!category && data.categories[0]) {
+			category = data.categories[0];
+		}
+	});
+
+	$effect(() => {
+		if (!nigeriaConnection && data.connections[0]) {
+			nigeriaConnection = data.connections[0];
+		}
+	});
 
 	let uploadingLogo = $state(false);
 	let uploadError = $state('');
