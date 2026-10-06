@@ -61,7 +61,10 @@ walk('src', ['.svelte'], (p, c) => {
 	}
 });
 
+const vendored = (f) => /^src\/lib\/components\/ui\/[a-z-]+\//.test(f);
+
 walk('src/lib', ['index.ts'], (p, c) => {
+	if (vendored(rel(p))) return;
 	if (/^\s*export\s+(\*|\{)[^;]*\bfrom\b/m.test(c)) {
 		fail(
 			rel(p),
@@ -165,7 +168,7 @@ function commentsOf(file, code) {
 
 function checkSource(p, code) {
 	const file = rel(p);
-	if (generated(file)) return;
+	if (generated(file) || vendored(file)) return;
 	const lines = code.split('\n').length - (code.endsWith('\n') ? 1 : 0);
 	if (lines > MAX_LINES) {
 		fail(file, `${lines} lines - split it by responsibility (limit ${MAX_LINES})`);
