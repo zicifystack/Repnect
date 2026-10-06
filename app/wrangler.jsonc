@@ -1,6 +1,6 @@
 {
 	"$schema": "node_modules/wrangler/config-schema.json",
-	"name": "sveltekit-cf-template",
+	"name": "repnect",
 	"main": "src/worker.ts",
 	"compatibility_date": "2026-07-10",
 	"compatibility_flags": ["nodejs_compat", "nodejs_als"],

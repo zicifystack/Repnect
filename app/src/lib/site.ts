@@ -1,8 +1,8 @@
 export const SITE = {
-	name: 'sveltekit-cf-template',
-	url: 'https://example.com',
+	name: 'Repnect',
+	url: 'https://repnect.com',
 	description:
-		'sveltekit-cf-template is a full-stack SvelteKit SaaS template on Cloudflare Workers - auth, organizations, billing, email, and tests included. Replace with what your product does; search engines show it verbatim.',
+		'Repnect is the curated showcase and directory platform for Nigerian tech projects, open-source repositories, and developer tools.',
 	ogImage: null as string | null,
 	twitter: null as string | null
 } as const;
