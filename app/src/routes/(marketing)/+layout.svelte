@@ -14,6 +14,7 @@
 
 	const navLinks = [
 		{ href: resolve('/directory'), label: 'Directory' },
+		{ href: resolve('/directory/analytics'), label: 'Analytics' },
 		{ href: resolve('/submit'), label: 'Submit' },
 		{ href: resolve('/blog'), label: m.blog_short() },
 		{ href: resolve('/pricing'), label: m.pricing_short() }

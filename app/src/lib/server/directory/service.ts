@@ -7,6 +7,8 @@ import {
 	type SubmitProjectInput
 } from './validation';
 
+import { DEFAULT_PROJECTS } from './defaults';
+
 export type DirectoryFilters = {
 	search?: string;
 	category?: string;
@@ -22,9 +24,10 @@ export async function listDirectoryItems(
 	ctx: Ctx,
 	filters: DirectoryFilters = {}
 ): Promise<DirectoryItem[]> {
-	const all = (await ctx.store.get<DirectoryItem[]>('dir:all', 'json')) ?? [];
+	const stored = await ctx.store.get<DirectoryItem[]>('dir:all', 'json');
+	const all = stored && stored.length > 0 ? stored : DEFAULT_PROJECTS;
 
-	let results = all;
+	let results = [...all];
 
 	if (filters.search) {
 		const q = filters.search.toLowerCase().trim();
@@ -89,7 +92,8 @@ export async function getDirectoryItem(ctx: Ctx, id: string): Promise<DirectoryI
 	const item = await ctx.store.get<DirectoryItem>(`dir:item:${id}`, 'json');
 	if (item) return item;
 
-	const all = (await ctx.store.get<DirectoryItem[]>('dir:all', 'json')) ?? [];
+	const stored = await ctx.store.get<DirectoryItem[]>('dir:all', 'json');
+	const all = stored && stored.length > 0 ? stored : DEFAULT_PROJECTS;
 	const found = all.find((i) => i.id === id);
 	if (!found) throw new AppError('not_found', 'Project not found in directory');
 	return found;
