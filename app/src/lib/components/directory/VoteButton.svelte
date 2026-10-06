@@ -16,9 +16,17 @@
 		size?: 'sm' | 'md';
 	} = $props();
 
-	let score = $state(initialScore);
-	let userVote = $state<'up' | 'down' | null>(initialUserVote);
+	let score = $state(0);
+	let userVote = $state<'up' | 'down' | null>(null);
 	let pending = $state(false);
+
+	$effect(() => {
+		score = initialScore;
+	});
+
+	$effect(() => {
+		userVote = initialUserVote;
+	});
 
 	async function handleVote(type: 'up' | 'down') {
 		if (pending) return;

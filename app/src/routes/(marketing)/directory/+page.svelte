@@ -250,18 +250,18 @@
 								</span>
 							</div>
 
-							{#if item.tags.length > 0}
-								<div class="mt-3 flex flex-wrap gap-1.5">
-									{#each item.tags as tag}
-										<span class="rounded-md bg-muted px-2 py-0.5 text-xs text-muted-foreground">
-											#{tag}
-										</span>
-									{/each}
-								</div>
-							{/if}
-						</div>
+								{#if item.tags.length > 0}
+									<div class="mt-3 flex flex-wrap gap-1.5">
+										{#each item.tags as tag}
+											<span class="rounded-md bg-muted px-2 py-0.5 text-xs text-muted-foreground">
+												#{tag}
+											</span>
+										{/each}
+									</div>
+								{/if}
+							</div>
 
-						<div class="mt-5 flex items-center justify-between border-t border-border pt-4 text-xs text-muted-foreground">
+							<div class="mt-5 flex items-center justify-between border-t border-border pt-4 text-xs text-muted-foreground">
 							<div class="flex items-center gap-3">
 								{#if item.stars > 0}
 									<span class="flex items-center gap-1 font-medium text-foreground">
