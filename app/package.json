@@ -4,9 +4,8 @@
 	"version": "0.0.1",
 	"license": "MIT",
 	"type": "module",
-	"packageManager": "bun@1.4.2",
 	"engines": {
-		"node": ">=24"
+		"node": ">=20"
 	},
 	"trustedDependencies": [
 		"esbuild",
