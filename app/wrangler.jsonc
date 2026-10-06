@@ -44,10 +44,10 @@
 		{
 			"binding": "DB",
 			"database_name": "repnect-db",
-			"database_id": "__D1_DATABASE_ID__"
+			"database_id": "b5ed8c8d-b620-41b1-bdc4-da62668dd6ab"
 		}
 	],
-	"kv_namespaces": [{ "binding": "KV", "id": "__KV_ID__" }],
+	"kv_namespaces": [{ "binding": "KV", "id": "a450290278254fec8d058c552dd84da6" }],
 	"r2_buckets": [{ "binding": "R2", "bucket_name": "__BUCKET_NAME__" }],
 	"ratelimits": [
 		{
