@@ -18,18 +18,13 @@
 		// "traces": { "enabled": true, "head_sampling_rate": 0.05 } // request tracing; auto-instruments fetch/KV/R2/DO; free in beta
 	},
 	"upload_source_maps": true,
-	"hyperdrive": [
-		{
-			"binding": "HYPERDRIVE",
-			"id": "__HYPERDRIVE_ID__",
-			"localConnectionString": "postgresql://postgres:postgres@localhost:5432/app"
-		}
-		// {
-		// 	"binding": "HYPERDRIVE_CACHED",
-		// 	"id": "__HYPERDRIVE_CACHED_ID__",
-		// 	"localConnectionString": "postgresql://postgres:postgres@localhost:5432/app"
-		// }
-	],
+	// "hyperdrive": [
+	// 	{
+	// 		"binding": "HYPERDRIVE",
+	// 		"id": "__HYPERDRIVE_ID__",
+	// 		"localConnectionString": "postgresql://postgres:postgres@localhost:5432/app"
+	// 	}
+	// ],
 	"triggers": {
 		"crons": ["0 3 * * *"]
 	},
@@ -57,24 +52,23 @@
 		}
 	],
 	// Worker Previews inherit nothing from above; never add crons, routes or queue consumers (docs/deploy.md).
-	"previews": {
-		"hyperdrive": [
-			{
-				"binding": "HYPERDRIVE",
-				"id": "__PREVIEW_HYPERDRIVE_ID__",
-				"localConnectionString": "postgresql://postgres:postgres@localhost:5432/app"
-			}
-		],
-		"d1_databases": [
-			{
-				"binding": "DB",
-				"database_name": "preview-repnect-db",
-				"database_id": "__PREVIEW_D1_DATABASE_ID__"
-			}
-		],
-		"kv_namespaces": [{ "binding": "KV", "id": "<preview-kv-id>" }]
-		// "r2_buckets": [{ "binding": "R2", "bucket_name": "preview-bucket" }]
-	}
+	// "previews": {
+	// 	"hyperdrive": [
+	// 		{
+	// 			"binding": "HYPERDRIVE",
+	// 			"id": "__PREVIEW_HYPERDRIVE_ID__",
+	// 			"localConnectionString": "postgresql://postgres:postgres@localhost:5432/app"
+	// 		}
+	// 	],
+	// 	"d1_databases": [
+	// 		{
+	// 			"binding": "DB",
+	// 			"database_name": "preview-repnect-db",
+	// 			"database_id": "__PREVIEW_D1_DATABASE_ID__"
+	// 		}
+	// 	],
+	// 	"kv_namespaces": [{ "binding": "KV", "id": "<preview-kv-id>" }]
+	// }
 	// "ai": { "binding": "AI" }
 	// "send_email": [{ "name": "EMAIL" }],
 	// "vars": {
