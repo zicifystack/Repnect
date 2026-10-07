@@ -30,19 +30,40 @@ export const actions: Actions = {
 			.map((t) => t.trim().toLowerCase())
 			.filter(Boolean);
 
+		const normalizeUrl = (url: unknown) => {
+			if (!url || typeof url !== 'string') return undefined;
+			const trimmed = url.trim();
+			if (!trimmed) return undefined;
+			if (!/^https?:\/\//i.test(trimmed)) {
+				return `https://${trimmed}`;
+			}
+			return trimmed;
+		};
+
+		const normalizeGithub = (repo: unknown) => {
+			if (!repo || typeof repo !== 'string') return undefined;
+			const trimmed = repo.trim();
+			if (!trimmed) return undefined;
+			const match =
+				trimmed.match(
+					/(?:https?:\/\/)?(?:www\.)?github\.com\/([a-zA-Z0-9_.-]+\/[a-zA-Z0-9_.-]+)/i
+				) || trimmed.match(/^([a-zA-Z0-9_.-]+\/[a-zA-Z0-9_.-]+)$/);
+			return match ? match[1].replace(/\.git$/i, '') : trimmed;
+		};
+
 		const rawData = {
-			id: formData.get('id'),
-			name: formData.get('name'),
-			description: formData.get('description'),
-			website_url: formData.get('website_url'),
-			logo_url: formData.get('logo_url') || undefined,
-			github_repo: formData.get('github_repo') || undefined,
+			id: String(formData.get('id') || '').trim(),
+			name: String(formData.get('name') || '').trim(),
+			description: String(formData.get('description') || '').trim(),
+			website_url: normalizeUrl(formData.get('website_url')) || '',
+			logo_url: normalizeUrl(formData.get('logo_url')) || '',
+			github_repo: normalizeGithub(formData.get('github_repo')) || '',
 			category: formData.get('category'),
 			tags,
-			location_city: formData.get('location_city'),
-			location_state: formData.get('location_state'),
+			location_city: String(formData.get('location_city') || '').trim(),
+			location_state: String(formData.get('location_state') || '').trim(),
 			nigeria_connection: formData.get('nigeria_connection'),
-			nigeria_connection_details: formData.get('nigeria_connection_details')
+			nigeria_connection_details: String(formData.get('nigeria_connection_details') || '').trim()
 		};
 
 		const parsed = submitProjectSchema.safeParse(rawData);

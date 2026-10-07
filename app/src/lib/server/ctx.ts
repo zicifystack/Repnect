@@ -171,9 +171,15 @@ function createStorage(r2Bucket?: R2Bucket, publicUrl?: string): BlobStorage {
 function createRateLimiter(limiter?: {
 	limit(options: { key: string }): Promise<{ success: boolean }>;
 }): RateLimiter {
-	if (limiter) {
+	if (limiter && typeof limiter.limit === 'function') {
 		return {
-			limit: async (key: string) => limiter.limit({ key })
+			limit: async (key: string) => {
+				try {
+					return await limiter.limit({ key });
+				} catch {
+					return { success: true };
+				}
+			}
 		};
 	}
 	return {
@@ -204,18 +210,8 @@ export function createDb(env: Env) {
 
 export function createCtx(platform: App.Platform | undefined): Ctx {
 	let env = {} as Env;
-	try {
-		if (platform?.env) {
-			const candidate = platform.env;
-			try {
-				void candidate.RATE_LIMITER;
-				env = candidate;
-			} catch {
-				env = {} as Env;
-			}
-		}
-	} catch {
-		env = {} as Env;
+	if (platform?.env) {
+		env = platform.env;
 	}
 	return createWorkerCtx(env, platform?.ctx);
 }

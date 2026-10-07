@@ -83,10 +83,14 @@ export async function getGlobalMetrics(ctx: Ctx): Promise<{
 	totalClicks: number;
 	totalSearches: number;
 }> {
-	const totalViews = await ctx.analytics.getMetric('views:total');
-	const totalClicks = await ctx.analytics.getMetric('clicks:total');
-	const totalSearches = await ctx.analytics.getMetric('searches:total');
-	return { totalViews, totalClicks, totalSearches };
+	try {
+		const totalViews = await ctx.analytics.getMetric('views:total');
+		const totalClicks = await ctx.analytics.getMetric('clicks:total');
+		const totalSearches = await ctx.analytics.getMetric('searches:total');
+		return { totalViews, totalClicks, totalSearches };
+	} catch {
+		return { totalViews: 0, totalClicks: 0, totalSearches: 0 };
+	}
 }
 
 function computeBreakdown(values: string[], total: number): BreakdownItem[] {
@@ -105,14 +109,22 @@ function computeBreakdown(values: string[], total: number): BreakdownItem[] {
 }
 
 export async function getDirectoryDataAnalytics(ctx: Ctx): Promise<DirectoryDataAnalytics> {
-	const stored = await ctx.store.get<DirectoryItem[]>('dir:all', 'json');
-	const items = stored && stored.length > 0 ? stored : DEFAULT_PROJECTS;
+	let items = DEFAULT_PROJECTS;
+	try {
+		const stored = await ctx.store.get<DirectoryItem[]>('dir:all', 'json');
+		if (stored && Array.isArray(stored) && stored.length > 0) {
+			items = stored;
+		}
+	} catch {}
+
 	const total = items.length;
 
-	const cities = items.map((i) => i.location_city);
-	const states = items.map((i) => i.location_state);
-	const categories = items.map((i) => i.category);
-	const connections = items.map((i) => i.nigeria_connection.replace(/_/g, ' '));
+	const cities = items.map((i) => i.location_city || 'Lagos');
+	const states = items.map((i) => i.location_state || 'Lagos');
+	const categories = items.map((i) => i.category || 'developer-tools');
+	const connections = items.map((i) =>
+		i.nigeria_connection ? i.nigeria_connection.replace(/_/g, ' ') : 'founder'
+	);
 	const allTags = items.flatMap((i) => i.tags ?? []);
 
 	const totalStars = items.reduce((sum, i) => sum + (i.stars || 0), 0);

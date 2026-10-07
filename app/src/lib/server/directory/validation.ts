@@ -69,11 +69,18 @@ export const directoryItemSchema = z.object({
 		.regex(/^[a-z0-9-]+$/, 'Slug must be lowercase alphanumeric with hyphens'),
 	name: z.string().min(2).max(100),
 	description: z.string().min(10).max(500),
-	website_url: z.string().url(),
-	logo_url: z.string().url().optional().or(z.literal('')),
+	website_url: z
+		.string()
+		.min(1)
+		.refine((val) => /^https?:\/\/.+/i.test(val), {
+			message: 'Must be a valid URL starting with http:// or https://'
+		}),
+	logo_url: z.string().optional().or(z.literal('')),
 	github_repo: z
 		.string()
-		.regex(/^[a-zA-Z0-9_.-]+\/[a-zA-Z0-9_.-]+$/)
+		.refine((val) => !val || /^[a-zA-Z0-9_.-]+\/[a-zA-Z0-9_.-]+$/.test(val), {
+			message: 'GitHub repo must be in the format owner/repo'
+		})
 		.optional()
 		.or(z.literal('')),
 	category: z.enum(CATEGORIES),
