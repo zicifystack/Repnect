@@ -185,3 +185,141 @@ export async function submitProject(
 
 	return { item, yamlPreview };
 }
+
+export type GitHubRepoDetails = {
+	owner: string;
+	repo: string;
+	fullName: string;
+	name: string;
+	slug: string;
+	description: string;
+	websiteUrl: string;
+	logoUrl: string;
+	stars: number;
+	tags: string[];
+	topics: string[];
+	language: string | null;
+};
+
+export type LanguageBreakdown = {
+	name: string;
+	bytes: number;
+	percentage: number;
+};
+
+export async function fetchGitHubRepoLanguages(
+	_ctx: Ctx,
+	rawInput: string
+): Promise<LanguageBreakdown[]> {
+	const parsed = parseGitHubRepo(rawInput);
+	if (!parsed) return [];
+	const { owner, repo } = parsed;
+	try {
+		const res = await fetch(`https://api.github.com/repos/${owner}/${repo}/languages`, {
+			headers: {
+				'User-Agent': 'repnect-directory',
+				Accept: 'application/vnd.github.v3+json'
+			}
+		});
+		if (!res.ok) return [];
+		const data = (await res.json()) as Record<string, number>;
+		const totalBytes = Object.values(data).reduce((acc, curr) => acc + curr, 0);
+		if (totalBytes === 0) return [];
+		return Object.entries(data)
+			.map(([name, bytes]) => ({
+				name,
+				bytes,
+				percentage: Math.round((bytes / totalBytes) * 1000) / 10
+			}))
+			.sort((a, b) => b.bytes - a.bytes);
+	} catch {
+		return [];
+	}
+}
+
+export function parseGitHubRepo(input: string): { owner: string; repo: string } | null {
+	const trimmed = input.trim();
+	const match =
+		trimmed.match(/(?:https?:\/\/)?(?:www\.)?github\.com\/([a-zA-Z0-9_.-]+)\/([a-zA-Z0-9_.-]+)/) ||
+		trimmed.match(/^([a-zA-Z0-9_.-]+)\/([a-zA-Z0-9_.-]+)$/);
+	if (!match || !match[1] || !match[2]) return null;
+	const owner = match[1];
+	const repo = match[2].replace(/\.git$/i, '');
+	return { owner, repo };
+}
+
+export async function fetchGitHubRepoDetails(
+	_ctx: Ctx,
+	rawInput: string
+): Promise<GitHubRepoDetails> {
+	const parsed = parseGitHubRepo(rawInput);
+	if (!parsed) {
+		throw new AppError('invalid', 'Please provide a valid GitHub repo in owner/repo format or URL');
+	}
+
+	const { owner, repo } = parsed;
+	const res = await fetch(`https://api.github.com/repos/${owner}/${repo}`, {
+		headers: {
+			'User-Agent': 'repnect-directory',
+			Accept: 'application/vnd.github.v3+json'
+		}
+	});
+
+	if (res.status === 404) {
+		throw new AppError(
+			'not_found',
+			`GitHub repository ${owner}/${repo} was not found or is private`
+		);
+	}
+
+	if (!res.ok) {
+		throw new AppError('internal', `GitHub API error (${res.status})`);
+	}
+
+	const data = (await res.json()) as {
+		name: string;
+		description: string | null;
+		homepage: string | null;
+		html_url: string;
+		owner: { avatar_url: string | null; login: string };
+		topics?: string[];
+		language: string | null;
+		stargazers_count: number;
+	};
+
+	const formattedName = data.name.replace(/[-_]+/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
+
+	const slug = data.name
+		.toLowerCase()
+		.replace(/[^a-z0-9]+/g, '-')
+		.replace(/^-+|-+$/g, '');
+
+	const topics = Array.isArray(data.topics) ? data.topics : [];
+	const tags = [...topics];
+	if (data.language && !tags.some((t) => t.toLowerCase() === data.language?.toLowerCase())) {
+		tags.push(data.language.toLowerCase());
+	}
+
+	let websiteUrl = data.homepage?.trim() || '';
+	if (websiteUrl && !websiteUrl.startsWith('http://') && !websiteUrl.startsWith('https://')) {
+		websiteUrl = `https://${websiteUrl}`;
+	}
+	if (!websiteUrl) {
+		websiteUrl = data.html_url;
+	}
+
+	return {
+		owner,
+		repo,
+		fullName: `${owner}/${repo}`,
+		name: formattedName,
+		slug,
+		description: data.description ?? '',
+		websiteUrl,
+		logoUrl: data.owner?.avatar_url ?? '',
+		stars: data.stargazers_count ?? 0,
+		tags,
+		topics,
+		language: data.language
+	};
+}

@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { Card, CardHeader, CardTitle, CardContent } from '$lib/components/ui/card';
+
 	let {
 		items = [],
 		title = ''
@@ -17,14 +19,18 @@
 	];
 </script>
 
-<div class="rounded-xl border border-border bg-card p-5 shadow-xs">
+<Card class="border-border bg-card shadow-xs">
 	{#if title}
-		<h3 class="text-sm font-semibold text-foreground uppercase tracking-wider">{title}</h3>
+		<CardHeader class="pb-2">
+			<CardTitle class="text-xs font-semibold tracking-wider text-muted-foreground uppercase">
+				{title}
+			</CardTitle>
+		</CardHeader>
 	{/if}
 
-	<div class="mt-4">
+	<CardContent class="pt-2">
 		<div class="flex h-3 w-full overflow-hidden rounded-full bg-muted">
-			{#each items as item, idx}
+			{#each items as item, idx (item.label)}
 				{#if item.percentage > 0}
 					<div
 						class="h-full transition-all {colors[idx % colors.length]}"
@@ -36,7 +42,7 @@
 		</div>
 
 		<div class="mt-4 flex flex-wrap gap-x-4 gap-y-2">
-			{#each items.slice(0, 6) as item, idx}
+			{#each items.slice(0, 6) as item, idx (item.label)}
 				<div class="flex items-center gap-1.5 text-xs">
 					<span class="h-2 w-2 rounded-full {colors[idx % colors.length]}"></span>
 					<span class="text-muted-foreground capitalize">{item.label}:</span>
@@ -44,5 +50,5 @@
 				</div>
 			{/each}
 		</div>
-	</div>
-</div>
+	</CardContent>
+</Card>

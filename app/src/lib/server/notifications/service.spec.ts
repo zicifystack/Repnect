@@ -52,7 +52,7 @@ describe('notify + inbox', () => {
 	});
 
 	it('keeps refresh rows out of the inbox but in the stream', async () => {
-		await notify(ctx, alice.id, { kind: 'refresh', params: { invalidate: 'app:notes' } });
+		await notify(ctx, alice.id, { kind: 'refresh', params: { invalidate: 'app:directory' } });
 		expect(await listNotifications(ctx, alice)).toHaveLength(0);
 		expect(await notificationsSince(ctx, alice, 0)).toHaveLength(1);
 	});

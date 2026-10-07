@@ -99,6 +99,7 @@
 		"postgres": "^3.4.9",
 		"posthog-js": "^1.398.0",
 		"qrcode": "^1.5.4",
+		"svelte-sonner": "^1.2.1",
 		"sveltekit-superforms": "^2.30.2",
 		"tailwind-merge": "^3.6.0",
 		"tailwind-variants": "^3.3.1",

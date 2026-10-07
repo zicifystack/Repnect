@@ -20,28 +20,43 @@ export const load: PageServerLoad = async ({ platform, url, cookies }) => {
 		(url.searchParams.get('sortBy') as 'stars' | 'newest' | 'name' | 'votes') ?? 'stars';
 
 	const ctx = createCtx(platform);
-	const items = await listDirectoryItems(ctx, {
-		search,
-		category,
-		state,
-		connection,
-		verifiedOnly,
-		goodFirstIssuesOnly,
-		minStars,
-		sortBy
-	});
+
+	let items: any[] = [];
+	try {
+		items = await listDirectoryItems(ctx, {
+			search,
+			category,
+			state,
+			connection,
+			verifiedOnly,
+			goodFirstIssuesOnly,
+			minStars,
+			sortBy
+		});
+	} catch {}
 
 	const voterId = cookies.get('voter_id');
-	const itemsWithVotes = await Promise.all(
-		items.map(async (item) => {
-			const stats = await getVoteStats(ctx, item.id, voterId);
-			return {
-				...item,
-				voteScore: stats.score,
-				userVote: stats.userVote
-			};
-		})
-	);
+	let itemsWithVotes: any[] = items;
+	try {
+		itemsWithVotes = await Promise.all(
+			items.map(async (item) => {
+				try {
+					const stats = await getVoteStats(ctx, item.id, voterId);
+					return {
+						...item,
+						voteScore: stats?.score ?? 0,
+						userVote: stats?.userVote ?? null
+					};
+				} catch {
+					return {
+						...item,
+						voteScore: 0,
+						userVote: null
+					};
+				}
+			})
+		);
+	} catch {}
 
 	return {
 		items: itemsWithVotes,

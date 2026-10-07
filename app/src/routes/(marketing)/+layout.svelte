@@ -16,8 +16,7 @@
 		{ href: resolve('/directory'), label: 'Directory' },
 		{ href: resolve('/directory/analytics'), label: 'Analytics' },
 		{ href: resolve('/submit'), label: 'Submit' },
-		{ href: resolve('/blog'), label: m.blog_short() },
-		{ href: resolve('/pricing'), label: m.pricing_short() }
+		{ href: resolve('/blog'), label: m.blog_short() }
 	];
 </script>
 
@@ -96,7 +95,6 @@
 			<p>{m.footer_copyright({ year: String(year), name: SITE.name })}</p>
 			<div class="flex flex-wrap gap-4">
 				<a href={resolve('/blog')} class="hover:text-foreground">{m.blog_short()}</a>
-				<a href={resolve('/pricing')} class="hover:text-foreground">{m.pricing_short()}</a>
 				<a href={resolve('/terms')} class="hover:text-foreground">{m.terms_short()}</a>
 				<a href={resolve('/privacy')} class="hover:text-foreground">{m.privacy_short()}</a>
 				<a href={resolve('/cookies')} class="hover:text-foreground">{m.cookies_short()}</a>

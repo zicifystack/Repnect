@@ -48,18 +48,41 @@ export type Actor = { id: string };
 const inMemoryStore = new Map<string, string | ArrayBuffer>();
 
 function createKvStore(kvNamespace?: KVNamespace): KeyValueStore {
-	if (kvNamespace) {
+	if (kvNamespace && typeof kvNamespace.get === 'function') {
 		return {
 			get: async <T = string>(key: string, type: 'text' | 'json' | 'arrayBuffer' = 'text'): Promise<T | null> => {
-				if (type === 'json') return kvNamespace.get(key, 'json') as Promise<T | null>;
-				if (type === 'arrayBuffer') return kvNamespace.get(key, 'arrayBuffer') as Promise<T | null>;
-				return kvNamespace.get(key, 'text') as Promise<T | null>;
+				try {
+					if (type === 'json') return (await kvNamespace.get(key, 'json')) as T | null;
+					if (type === 'arrayBuffer') return (await kvNamespace.get(key, 'arrayBuffer')) as T | null;
+					return (await kvNamespace.get(key, 'text')) as T | null;
+				} catch {
+					const item = inMemoryStore.get(key);
+					if (item == null) return null;
+					if (type === 'json' && typeof item === 'string') {
+						try {
+							return JSON.parse(item) as T;
+						} catch {
+							return null;
+						}
+					}
+					return item as unknown as T;
+				}
 			},
 			put: async (key, value, opts) => {
-				await kvNamespace.put(key, value as any, opts);
+				try {
+					await kvNamespace.put(key, value as any, opts);
+				} catch {
+					if (typeof value === 'string' || value instanceof ArrayBuffer) {
+						inMemoryStore.set(key, value);
+					}
+				}
 			},
 			delete: async (key) => {
-				await kvNamespace.delete(key);
+				try {
+					await kvNamespace.delete(key);
+				} catch {
+					inMemoryStore.delete(key);
+				}
 			}
 		};
 	}
@@ -153,7 +176,20 @@ export function createDb(env: Env) {
 }
 
 export function createCtx(platform: App.Platform | undefined): Ctx {
-	const env = platform?.env ?? ({} as Env);
+	let env = {} as Env;
+	try {
+		if (platform?.env) {
+			const candidate = platform.env;
+			try {
+				void candidate.RATE_LIMITER;
+				env = candidate;
+			} catch {
+				env = {} as Env;
+			}
+		}
+	} catch {
+		env = {} as Env;
+	}
 	return createWorkerCtx(env, platform?.ctx);
 }
 

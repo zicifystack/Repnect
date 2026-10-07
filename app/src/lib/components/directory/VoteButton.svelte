@@ -68,11 +68,19 @@
 </script>
 
 <div
-	class="inline-flex items-center rounded-lg border border-border bg-card shadow-2xs select-none {orientation === 'vertical' ? 'flex-col p-1' : 'flex-row gap-1 px-2 py-1'}"
+	class="inline-flex items-center rounded-lg border border-border bg-card shadow-2xs select-none {orientation ===
+	'vertical'
+		? 'flex-col p-1'
+		: 'flex-row gap-1 px-2 py-1'}"
 >
 	<button
 		type="button"
-		class="flex items-center justify-center rounded-md transition hover:bg-muted active:scale-95 {size === 'sm' ? 'h-6 w-6' : 'h-7 w-7'} {userVote === 'up' ? 'bg-primary-500/15 text-link' : 'text-muted-foreground hover:text-foreground'}"
+		class="flex items-center justify-center rounded-md transition hover:bg-muted active:scale-95 {size ===
+		'sm'
+			? 'h-6 w-6'
+			: 'h-7 w-7'} {userVote === 'up'
+			? 'bg-primary-500/15 text-link'
+			: 'text-muted-foreground hover:text-foreground'}"
 		aria-label="Upvote"
 		aria-pressed={userVote === 'up'}
 		onclick={() => handleVote('up')}
@@ -81,14 +89,23 @@
 	</button>
 
 	<span
-		class="font-semibold tabular-nums {size === 'sm' ? 'text-xs px-1' : 'text-sm px-1.5'} {score > 0 ? 'text-link' : score < 0 ? 'text-destructive' : 'text-muted-foreground'}"
+		class="font-semibold tabular-nums {size === 'sm' ? 'text-xs px-1' : 'text-sm px-1.5'} {score > 0
+			? 'text-link'
+			: score < 0
+				? 'text-destructive'
+				: 'text-muted-foreground'}"
 	>
 		{score}
 	</span>
 
 	<button
 		type="button"
-		class="flex items-center justify-center rounded-md transition hover:bg-muted active:scale-95 {size === 'sm' ? 'h-6 w-6' : 'h-7 w-7'} {userVote === 'down' ? 'bg-destructive/15 text-destructive' : 'text-muted-foreground hover:text-foreground'}"
+		class="flex items-center justify-center rounded-md transition hover:bg-muted active:scale-95 {size ===
+		'sm'
+			? 'h-6 w-6'
+			: 'h-7 w-7'} {userVote === 'down'
+			? 'bg-destructive/15 text-destructive'
+			: 'text-muted-foreground hover:text-foreground'}"
 		aria-label="Downvote"
 		aria-pressed={userVote === 'down'}
 		onclick={() => handleVote('down')}

@@ -1,71 +1,124 @@
 <script lang="ts">
-	import { Check } from '@lucide/svelte';
-	import { enhance as toggleEnhance } from '$app/forms';
-	import { superForm } from 'sveltekit-superforms';
+	import { resolve } from '$app/paths';
+	import { Compass, FolderPlus, ArrowRight, Sparkles, User, Settings } from '@lucide/svelte';
 	import Seo from '$lib/components/seo/Seo.svelte';
 	import Button from '$lib/components/ui/Button.svelte';
-	import Input from '$lib/components/ui/Input.svelte';
-	import * as m from '$lib/paraglide/messages';
+	import {
+		Card,
+		CardHeader,
+		CardTitle,
+		CardDescription,
+		CardContent
+	} from '$lib/components/ui/card';
 	import type { PageProps } from './$types';
 
 	let { data }: PageProps = $props();
-	// svelte-ignore state_referenced_locally
-	const { form, errors, message, enhance, submitting } = superForm(data.form, {
-		resetForm: true
-	});
 </script>
 
-<Seo title={m.app_title()} noindex />
+<Seo title="Dashboard | Repnect" noindex />
 
-<main class="mx-auto max-w-xl space-y-8 p-4 sm:p-8">
-	<header class="space-y-2">
-		<h1 class="text-2xl font-semibold">{m.app_title()}</h1>
-		<p class="text-sm text-muted-foreground">{m.app_tagline()}</p>
+<main class="mx-auto max-w-5xl space-y-8 p-4 sm:p-8">
+	<header class="space-y-1.5">
+		<h1 class="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+			Welcome, {data.user.name}
+		</h1>
+		<p class="text-sm text-muted-foreground">
+			Manage your projects, discover ecosystem updates, and customize your account profile.
+		</p>
 	</header>
 
-	<form method="POST" action="?/add" use:enhance class="flex items-start gap-2">
-		<label class="flex-1">
-			<span class="sr-only">{m.title_label()}</span>
-			<Input
-				name="title"
-				aria-label={m.title_label()}
-				placeholder={m.todo_placeholder()}
-				aria-invalid={$errors.title ? 'true' : undefined}
-				bind:value={$form.title}
-			/>
-			{#if $errors.title}
-				<span class="mt-1 block text-sm text-destructive">{$errors.title}</span>
-			{/if}
-		</label>
-		<Button type="submit" disabled={$submitting}>
-			{m.add()}
-		</Button>
-	</form>
-
-	{#if $message}
-		<p role="status" class="text-sm text-success">{$message}</p>
-	{/if}
-
-	<ul class="divide-y divide-border">
-		{#each data.todos as todo (todo.id)}
-			<li class="flex items-center gap-3 py-2">
-				<form method="POST" action="?/toggle" use:toggleEnhance>
-					<input type="hidden" name="id" value={todo.id} />
-					<input type="hidden" name="done" value={String(!todo.done)} />
-					<button
-						type="submit"
-						aria-label={todo.done ? m.todo_mark_not_done() : m.todo_mark_done()}
-						class="flex h-5 w-5 items-center justify-center rounded border border-input text-link hover:border-primary-500"
+	<div class="grid gap-6 sm:grid-cols-3">
+		<Card class="border-border bg-card p-5 shadow-xs">
+			<div class="flex items-center gap-3">
+				<div
+					class="flex size-10 items-center justify-center rounded-xl bg-primary-500/10 text-link"
+				>
+					<Compass class="size-5" />
+				</div>
+				<div>
+					<CardTitle class="text-base font-semibold">Directory</CardTitle>
+					<CardDescription class="text-xs"
+						>{data.directoryCount} Nigerian innovations</CardDescription
 					>
-						{#if todo.done}
-							<Check class="h-3.5 w-3.5" strokeWidth={3} />
-						{/if}
-					</button>
-				</form>
-				<span class:line-through={todo.done}>{todo.title}</span>
-			</li>
-		{:else}
-			<li class="py-2 text-sm text-muted-foreground">{m.nothing_yet()}</li>
-		{/each}
-	</ul>
+				</div>
+			</div>
+			<div class="mt-4">
+				<Button
+					href={resolve('/directory')}
+					variant="outline"
+					size="sm"
+					class="w-full gap-1.5 text-xs"
+				>
+					<span>Browse Projects</span>
+					<ArrowRight class="size-3.5" />
+				</Button>
+			</div>
+		</Card>
+
+		<Card class="border-border bg-card p-5 shadow-xs">
+			<div class="flex items-center gap-3">
+				<div
+					class="flex size-10 items-center justify-center rounded-xl bg-primary-500/10 text-link"
+				>
+					<FolderPlus class="size-5" />
+				</div>
+				<div>
+					<CardTitle class="text-base font-semibold">Submit</CardTitle>
+					<CardDescription class="text-xs">Showcase your innovation</CardDescription>
+				</div>
+			</div>
+			<div class="mt-4">
+				<Button href={resolve('/submit')} size="sm" class="w-full gap-1.5 text-xs">
+					<span>Submit Project</span>
+					<ArrowRight class="size-3.5" />
+				</Button>
+			</div>
+		</Card>
+
+		<Card class="border-border bg-card p-5 shadow-xs">
+			<div class="flex items-center gap-3">
+				<div
+					class="flex size-10 items-center justify-center rounded-xl bg-primary-500/10 text-link"
+				>
+					<Settings class="size-5" />
+				</div>
+				<div>
+					<CardTitle class="text-base font-semibold">Account</CardTitle>
+					<CardDescription class="text-xs">Security, sessions, profile</CardDescription>
+				</div>
+			</div>
+			<div class="mt-4">
+				<Button
+					href={resolve('/app/settings')}
+					variant="outline"
+					size="sm"
+					class="w-full gap-1.5 text-xs"
+				>
+					<span>Manage Settings</span>
+					<ArrowRight class="size-3.5" />
+				</Button>
+			</div>
+		</Card>
+	</div>
+
+	<Card class="border-border bg-card p-6 shadow-xs">
+		<CardHeader class="p-0 pb-4">
+			<div class="flex items-center gap-2 text-link">
+				<Sparkles class="size-4" />
+				<h2 class="text-sm font-semibold text-foreground">Nigerian Engineering Spotlight</h2>
+			</div>
+			<CardDescription class="text-xs mt-1">
+				Repnect tracks tech projects, GitHub open source repositories, and tools created by
+				Nigerians across 36 states and the diaspora.
+			</CardDescription>
+		</CardHeader>
+		<CardContent class="p-0 pt-2 flex flex-wrap gap-3">
+			<Button href={resolve('/directory/analytics')} variant="secondary" size="sm" class="text-xs">
+				View Ecosystem Analytics
+			</Button>
+			<Button href={resolve('/directory')} variant="ghost" size="sm" class="text-xs text-link">
+				Explore All Projects ↗
+			</Button>
+		</CardContent>
+	</Card>
 </main>

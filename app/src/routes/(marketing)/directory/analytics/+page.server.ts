@@ -1,8 +1,5 @@
 import { createCtx } from '$lib/server/ctx';
-import {
-	getDirectoryDataAnalytics,
-	getGlobalMetrics
-} from '$lib/server/directory/analytics';
+import { getDirectoryDataAnalytics, getGlobalMetrics } from '$lib/server/directory/analytics';
 import type { PageServerLoad } from './$types';
 
 export const prerender = false;

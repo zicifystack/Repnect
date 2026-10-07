@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { Card, CardHeader, CardTitle, CardContent } from '$lib/components/ui/card';
+
 	let {
 		items = [],
 		title = '',
@@ -13,16 +15,20 @@
 	const maxCount = $derived(Math.max(...items.map((i) => i.count), 1));
 </script>
 
-<div class="rounded-xl border border-border bg-card p-5 shadow-xs">
+<Card class="border-border bg-card shadow-xs">
 	{#if title}
-		<h3 class="text-sm font-semibold text-foreground uppercase tracking-wider">{title}</h3>
+		<CardHeader class="pb-2">
+			<CardTitle class="text-xs font-semibold tracking-wider text-muted-foreground uppercase">
+				{title}
+			</CardTitle>
+		</CardHeader>
 	{/if}
 
-	<div class="mt-4 space-y-3">
+	<CardContent class="space-y-3 pt-2">
 		{#if displayed.length === 0}
 			<p class="py-4 text-center text-xs text-muted-foreground">No data available</p>
 		{:else}
-			{#each displayed as item}
+			{#each displayed as item (item.label)}
 				<div>
 					<div class="flex items-center justify-between text-xs">
 						<span class="font-medium text-foreground truncate max-w-[60%]">{item.label}</span>
@@ -40,5 +46,5 @@
 				</div>
 			{/each}
 		{/if}
-	</div>
-</div>
+	</CardContent>
+</Card>
