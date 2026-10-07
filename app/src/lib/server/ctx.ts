@@ -153,10 +153,8 @@ export function createDb(env: Env) {
 }
 
 export function createCtx(platform: App.Platform | undefined): Ctx {
-	if (!platform?.env) {
-		throw new Error('Cloudflare platform unavailable - run through vite dev or wrangler dev');
-	}
-	return createWorkerCtx(platform.env, platform.ctx);
+	const env = platform?.env ?? ({} as Env);
+	return createWorkerCtx(env, platform?.ctx);
 }
 
 function createAnalyticsTracker(env: Env, store: KeyValueStore): AnalyticsTracker {
