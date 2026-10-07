@@ -7,6 +7,7 @@
 	import * as Breadcrumb from '$lib/components/ui/breadcrumb';
 	import SubmitRepoAutofill from '$lib/components/directory/SubmitRepoAutofill.svelte';
 	import SubmitYamlPreview from '$lib/components/directory/SubmitYamlPreview.svelte';
+	import SubmitSteps from '$lib/components/directory/SubmitSteps.svelte';
 	import type { GitHubRepoDetails } from '$lib/server/directory/service';
 	import type { ActionData, PageData } from './$types';
 
@@ -162,6 +163,8 @@ updated_at: ${new Date().toISOString()}`);
 			Request.
 		</p>
 	</div>
+
+	<SubmitSteps />
 
 	{#if form?.success}
 		<Card class="border-success/30 bg-success/10 p-6 sm:p-8">
