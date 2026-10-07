@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { Github, FileText, Code2, MapPin, Clock } from '@lucide/svelte';
+	import { FileText, Code2, MapPin, Clock } from '@lucide/svelte';
+	import GithubIcon from '$lib/components/icons/GithubIcon.svelte';
 
 	const steps = [
 		{
@@ -7,7 +8,7 @@
 			title: 'GitHub Autofill',
 			subtitle: 'Optional quickstart',
 			description: 'Enter your repo to automatically pull description, tags, stars, and language.',
-			icon: Github
+			icon: GithubIcon
 		},
 		{
 			number: '02',
