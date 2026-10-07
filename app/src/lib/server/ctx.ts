@@ -208,20 +208,35 @@ export function createDb(env: Env) {
 	return createClient(env.HYPERDRIVE.connectionString);
 }
 
-export function createCtx(platform: App.Platform | undefined): Ctx {
-	let env = {} as Env;
-	if (platform?.env) {
-		env = platform.env;
+function safeEnv(platform: App.Platform | undefined): Env {
+	try {
+		const env = platform?.env;
+		if (!env) return {} as Env;
+		void (env as any).RATE_LIMITER;
+		return env;
+	} catch {
+		return {} as Env;
 	}
-	return createWorkerCtx(env, platform?.ctx);
+}
+
+export function createCtx(platform: App.Platform | undefined): Ctx {
+	return createWorkerCtx(safeEnv(platform), platform?.ctx);
+}
+
+function safeProp<T>(obj: unknown, key: string): T | undefined {
+	try {
+		return (obj as Record<string, unknown>)?.[key] as T | undefined;
+	} catch {
+		return undefined;
+	}
 }
 
 function createAnalyticsTracker(env: Env, store: KeyValueStore): AnalyticsTracker {
 	return {
 		capture: async (event, opts) => {
-			const key = env.PUBLIC_POSTHOG_KEY;
+			const key = safeProp<string>(env, 'PUBLIC_POSTHOG_KEY');
 			if (!key) return;
-			const host = env.PUBLIC_POSTHOG_HOST || 'https://us.i.posthog.com';
+			const host = safeProp<string>(env, 'PUBLIC_POSTHOG_HOST') || 'https://us.i.posthog.com';
 			try {
 				await fetch(`${host}/capture/`, {
 					method: 'POST',
@@ -254,19 +269,27 @@ export function createWorkerCtx(env: Env, executionCtx?: App.Platform['ctx']): C
 		clients.push(client);
 		return drizzle(client, { schema });
 	};
-	const db = env.HYPERDRIVE
-		? make(env.HYPERDRIVE.connectionString)
+
+	const hyperdrive = safeProp<Env['HYPERDRIVE']>(env, 'HYPERDRIVE');
+	const hyperdriveCached = safeProp<Env['HYPERDRIVE_CACHED']>(env, 'HYPERDRIVE_CACHED');
+	const kv = safeProp<Env['KV']>(env, 'KV');
+	const r2 = safeProp<Env['R2']>(env, 'R2');
+	const r2Url = safeProp<string>(env, 'R2_PUBLIC_URL');
+	const limiter = safeProp<Env['RATE_LIMITER']>(env, 'RATE_LIMITER');
+
+	const db = hyperdrive
+		? make(hyperdrive.connectionString)
 		: (null as unknown as ReturnType<typeof createDb>);
-	const storage = createStorage(env.R2, env.R2_PUBLIC_URL);
-	const store = createKvStore(env.KV);
+	const storage = createStorage(r2, r2Url);
+	const store = createKvStore(kv);
 
 	return {
 		db,
-		dbCached: env.HYPERDRIVE_CACHED ? make(env.HYPERDRIVE_CACHED.connectionString) : db,
+		dbCached: hyperdriveCached ? make(hyperdriveCached.connectionString) : db,
 		store,
 		storage,
 		images: storage,
-		rateLimiter: createRateLimiter(env.RATE_LIMITER),
+		rateLimiter: createRateLimiter(limiter),
 		mailer: createMailer(env),
 		analytics: createAnalyticsTracker(env, store),
 		waitUntil: executionCtx
