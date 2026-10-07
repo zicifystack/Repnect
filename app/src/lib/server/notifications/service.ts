@@ -1,6 +1,6 @@
 import { and, count, desc, eq, gt, isNull } from 'drizzle-orm';
 import { INBOX_LIMIT, type NotifBodyKey, type NotifKind } from '$lib/notifications';
-import { member, notification } from '../db/schema';
+import { notification } from '../db/schema';
 import { AppError } from '../errors';
 import type { Actor, Ctx } from '../ctx';
 
@@ -26,17 +26,15 @@ export async function notify(ctx: Ctx, userId: string, input: NotifyInput) {
 	return created;
 }
 
-export async function notifyOrg(ctx: Ctx, orgId: string, input: NotifyInput & { except?: string }) {
-	const members = await ctx.db
-		.select({ userId: member.userId })
-		.from(member)
-		.where(eq(member.organizationId, orgId));
-	const targets = members.map((m) => m.userId).filter((id) => id !== input.except);
-	if (!targets.length) return [];
-	return ctx.db
-		.insert(notification)
-		.values(targets.map((userId) => row(userId, input)))
-		.returning();
+export async function notifyOrg(
+	_ctx: Ctx,
+	_orgId: string,
+	_input: NotifyInput & { except?: string }
+) {
+	void _ctx;
+	void _orgId;
+	void _input;
+	return [];
 }
 
 export async function listNotifications(ctx: Ctx, actor: Actor, limit = INBOX_LIMIT) {

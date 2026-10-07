@@ -16,7 +16,10 @@ function parseSimpleYaml(content) {
 		if (!line || line.startsWith('#')) continue;
 
 		if (line.startsWith('- ') && currentListKey) {
-			const val = line.slice(2).trim().replace(/^["']|["']$/g, '');
+			const val = line
+				.slice(2)
+				.trim()
+				.replace(/^["']|["']$/g, '');
 			if (!Array.isArray(result[currentListKey])) result[currentListKey] = [];
 			result[currentListKey].push(val);
 			continue;
@@ -91,9 +94,7 @@ async function run() {
 		process.exit(0);
 	}
 
-	const files = readdirSync(PROJECTS_DIR).filter(
-		(f) => f.endsWith('.yaml') || f.endsWith('.yml')
-	);
+	const files = readdirSync(PROJECTS_DIR).filter((f) => f.endsWith('.yaml') || f.endsWith('.yml'));
 	console.log(`Found ${files.length} project definitions.`);
 
 	const items = [];

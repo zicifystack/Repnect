@@ -16,33 +16,28 @@
 		size?: 'sm' | 'md';
 	} = $props();
 
-	let score = $state(0);
-	let userVote = $state<'up' | 'down' | null>(null);
+	let localVote = $state<'up' | 'down' | null | undefined>(undefined);
+	let scoreDelta = $state(0);
 	let pending = $state(false);
 
-	$effect(() => {
-		score = initialScore;
-	});
-
-	$effect(() => {
-		userVote = initialUserVote;
-	});
+	const userVote = $derived(localVote !== undefined ? localVote : initialUserVote);
+	const score = $derived(initialScore + scoreDelta);
 
 	async function handleVote(type: 'up' | 'down') {
 		if (pending) return;
 
-		const previousScore = score;
-		const previousVote = userVote;
+		const prevVote = userVote;
+		const prevDelta = scoreDelta;
 
 		if (userVote === type) {
-			userVote = null;
-			score += type === 'up' ? -1 : 1;
+			localVote = null;
+			scoreDelta += type === 'up' ? -1 : 1;
 		} else if (userVote != null) {
-			userVote = type;
-			score += type === 'up' ? 2 : -2;
+			localVote = type;
+			scoreDelta += type === 'up' ? 2 : -2;
 		} else {
-			userVote = type;
-			score += type === 'up' ? 1 : -1;
+			localVote = type;
+			scoreDelta += type === 'up' ? 1 : -1;
 		}
 
 		pending = true;
@@ -56,11 +51,11 @@
 			if (!res.ok) throw new Error('Vote failed');
 
 			const data = (await res.json()) as { score: number; userVote: 'up' | 'down' | null };
-			score = data.score;
-			userVote = data.userVote;
+			localVote = data.userVote;
+			scoreDelta = data.score - initialScore;
 		} catch {
-			score = previousScore;
-			userVote = previousVote;
+			localVote = prevVote;
+			scoreDelta = prevDelta;
 		} finally {
 			pending = false;
 		}

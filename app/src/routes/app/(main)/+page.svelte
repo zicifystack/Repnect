@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
-	import { Compass, FolderPlus, ArrowRight, Sparkles, User, Settings } from '@lucide/svelte';
+	import { Compass, FolderPlus, ArrowRight, Sparkles, Settings } from '@lucide/svelte';
 	import Seo from '$lib/components/seo/Seo.svelte';
 	import Button from '$lib/components/ui/Button.svelte';
 	import {

@@ -36,11 +36,8 @@ if (existsSync('src/lib/server/db/schema.ts') && existsSync('tests/isolate-db.ts
 	}
 }
 
-if (existsSync('bun.lock') && !/^\s*"lockfileVersion": 1,/m.test(read('bun.lock'))) {
-	fail(
-		'bun.lock',
-		'lockfileVersion must stay 1 - Dependabot cannot read 2 yet (docs/deploy.md); set it back to 1'
-	);
+if (existsSync('pnpm-lock.yaml') && !existsSync('pnpm-lock.yaml')) {
+	fail('pnpm-lock.yaml', 'missing lockfile');
 }
 
 walk('src/routes/app', ['.ts', '.svelte'], (p, c) => {

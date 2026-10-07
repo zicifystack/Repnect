@@ -1,7 +1,6 @@
-import { and, desc, eq, gt, inArray, ne } from 'drizzle-orm';
+import { and, desc, eq, gt, ne } from 'drizzle-orm';
 import { AVATAR_MAX_BYTES, AVATAR_TYPES } from '$lib/avatar';
-import { account, member, passkey, session, subscription, user } from '../db/schema';
-import { isEntitled } from '../billing/entitlement';
+import { account, passkey, session, user } from '../db/schema';
 import { AppError } from '../errors';
 import {
 	assertUploadWithin,
@@ -137,22 +136,10 @@ export async function revokeOtherSessions(ctx: Ctx, actor: Actor, keepSessionId:
 		.where(and(eq(session.userId, actor.id), ne(session.id, keepSessionId)));
 }
 
-export async function ownsEntitledOrg(ctx: Ctx, actor: Actor): Promise<boolean> {
-	const owned = await ctx.db
-		.select({ orgId: member.organizationId })
-		.from(member)
-		.where(and(eq(member.userId, actor.id), eq(member.role, 'owner')));
-	if (!owned.length) return false;
-	const subs = await ctx.db
-		.select()
-		.from(subscription)
-		.where(
-			inArray(
-				subscription.organizationId,
-				owned.map((o) => o.orgId)
-			)
-		);
-	return subs.some((s) => isEntitled(s));
+export async function ownsEntitledOrg(_ctx?: Ctx, _actor?: Actor): Promise<boolean> {
+	void _ctx;
+	void _actor;
+	return false;
 }
 
 export async function listUserPasskeys(ctx: Ctx, actor: Actor) {

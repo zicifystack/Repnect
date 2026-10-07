@@ -1,11 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { createWorkerCtx } from '../ctx';
-import {
-	getDirectoryItem,
-	listDirectoryItems,
-	syncDirectoryItems,
-	submitProject
-} from './service';
+import { getDirectoryItem, listDirectoryItems, syncDirectoryItems, submitProject } from './service';
 import type { DirectoryItem } from './validation';
 
 const sampleItem: DirectoryItem = {

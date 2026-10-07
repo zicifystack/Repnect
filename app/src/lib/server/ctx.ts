@@ -5,13 +5,23 @@ import { sendEmail, type EmailContent } from './email/service';
 
 export type KeyValueStore = {
 	get: <T = string>(key: string, type?: 'text' | 'json' | 'arrayBuffer') => Promise<T | null>;
-	put: (key: string, value: string | ArrayBuffer | ReadableStream, opts?: { expirationTtl?: number }) => Promise<void>;
+	put: (
+		key: string,
+		value: string | ArrayBuffer | ReadableStream,
+		opts?: { expirationTtl?: number }
+	) => Promise<void>;
 	delete: (key: string) => Promise<void>;
 };
 
 export type BlobStorage = {
-	get: (key: string) => Promise<{ body: ReadableStream; contentType?: string; size: number } | null>;
-	put: (key: string, value: ReadableStream | ArrayBuffer | string, opts?: { contentType?: string }) => Promise<void>;
+	get: (
+		key: string
+	) => Promise<{ body: ReadableStream; contentType?: string; size: number } | null>;
+	put: (
+		key: string,
+		value: ReadableStream | ArrayBuffer | string,
+		opts?: { contentType?: string }
+	) => Promise<void>;
 	delete: (key: string) => Promise<void>;
 	getPublicUrl: (key: string) => string | null;
 };
@@ -25,7 +35,10 @@ export type Mailer = {
 };
 
 export type AnalyticsTracker = {
-	capture: (event: string, opts?: { distinctId?: string; properties?: Record<string, unknown> }) => Promise<void>;
+	capture: (
+		event: string,
+		opts?: { distinctId?: string; properties?: Record<string, unknown> }
+	) => Promise<void>;
 	recordMetric: (key: string, delta?: number) => Promise<void>;
 	getMetric: (key: string) => Promise<number>;
 };
@@ -50,10 +63,14 @@ const inMemoryStore = new Map<string, string | ArrayBuffer>();
 function createKvStore(kvNamespace?: KVNamespace): KeyValueStore {
 	if (kvNamespace && typeof kvNamespace.get === 'function') {
 		return {
-			get: async <T = string>(key: string, type: 'text' | 'json' | 'arrayBuffer' = 'text'): Promise<T | null> => {
+			get: async <T = string>(
+				key: string,
+				type: 'text' | 'json' | 'arrayBuffer' = 'text'
+			): Promise<T | null> => {
 				try {
 					if (type === 'json') return (await kvNamespace.get(key, 'json')) as T | null;
-					if (type === 'arrayBuffer') return (await kvNamespace.get(key, 'arrayBuffer')) as T | null;
+					if (type === 'arrayBuffer')
+						return (await kvNamespace.get(key, 'arrayBuffer')) as T | null;
 					return (await kvNamespace.get(key, 'text')) as T | null;
 				} catch {
 					const item = inMemoryStore.get(key);
@@ -70,7 +87,7 @@ function createKvStore(kvNamespace?: KVNamespace): KeyValueStore {
 			},
 			put: async (key, value, opts) => {
 				try {
-					await kvNamespace.put(key, value as any, opts);
+					await kvNamespace.put(key, value as string | ArrayBuffer | ReadableStream, opts);
 				} catch {
 					if (typeof value === 'string' || value instanceof ArrayBuffer) {
 						inMemoryStore.set(key, value);
@@ -87,7 +104,10 @@ function createKvStore(kvNamespace?: KVNamespace): KeyValueStore {
 		};
 	}
 	return {
-		get: async <T = string>(key: string, type: 'text' | 'json' | 'arrayBuffer' = 'text'): Promise<T | null> => {
+		get: async <T = string>(
+			key: string,
+			type: 'text' | 'json' | 'arrayBuffer' = 'text'
+		): Promise<T | null> => {
 			const item = inMemoryStore.get(key);
 			if (item == null) return null;
 			if (type === 'json' && typeof item === 'string') {
@@ -123,7 +143,11 @@ function createStorage(r2Bucket?: R2Bucket, publicUrl?: string): BlobStorage {
 				};
 			},
 			put: async (key: string, value, opts) => {
-				await r2Bucket.put(key, value as any, opts?.contentType ? { httpMetadata: { contentType: opts.contentType } } : undefined);
+				await r2Bucket.put(
+					key,
+					value as ArrayBuffer | ReadableStream | string,
+					opts?.contentType ? { httpMetadata: { contentType: opts.contentType } } : undefined
+				);
 			},
 			delete: async (key: string) => {
 				await r2Bucket.delete(key);
@@ -139,11 +163,14 @@ function createStorage(r2Bucket?: R2Bucket, publicUrl?: string): BlobStorage {
 		get: async () => null,
 		put: async () => {},
 		delete: async () => {},
-		getPublicUrl: (key: string) => (publicUrl ? `${publicUrl.replace(/\/+$/, '')}/${key.replace(/^\/+/, '')}` : null)
+		getPublicUrl: (key: string) =>
+			publicUrl ? `${publicUrl.replace(/\/+$/, '')}/${key.replace(/^\/+/, '')}` : null
 	};
 }
 
-function createRateLimiter(limiter?: { limit(options: { key: string }): Promise<{ success: boolean }> }): RateLimiter {
+function createRateLimiter(limiter?: {
+	limit(options: { key: string }): Promise<{ success: boolean }>;
+}): RateLimiter {
 	if (limiter) {
 		return {
 			limit: async (key: string) => limiter.limit({ key })
@@ -231,7 +258,9 @@ export function createWorkerCtx(env: Env, executionCtx?: App.Platform['ctx']): C
 		clients.push(client);
 		return drizzle(client, { schema });
 	};
-	const db = env.HYPERDRIVE ? make(env.HYPERDRIVE.connectionString) : (null as unknown as ReturnType<typeof createDb>);
+	const db = env.HYPERDRIVE
+		? make(env.HYPERDRIVE.connectionString)
+		: (null as unknown as ReturnType<typeof createDb>);
 	const storage = createStorage(env.R2, env.R2_PUBLIC_URL);
 	const store = createKvStore(env.KV);
 

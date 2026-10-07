@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
+	import { SvelteURLSearchParams } from 'svelte/reactivity';
 	import { Sparkles, Plus, LayoutGrid, List } from '@lucide/svelte';
 	import Seo from '$lib/components/seo/Seo.svelte';
 	import Button from '$lib/components/ui/Button.svelte';
@@ -39,7 +40,7 @@
 	syncFromFilters();
 
 	function applyFilters() {
-		const params = new URLSearchParams();
+		const params = new SvelteURLSearchParams();
 		if (searchQuery) params.set('q', searchQuery);
 		if (selectedCategory) params.set('category', selectedCategory);
 		if (selectedState) params.set('state', selectedState);

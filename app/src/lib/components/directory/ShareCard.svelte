@@ -7,7 +7,6 @@
 		CardDescription,
 		CardContent
 	} from '$lib/components/ui/card';
-	import { Badge } from '$lib/components/ui/badge';
 	import Button from '$lib/components/ui/Button.svelte';
 	import type { DirectoryItem } from '$lib/server/directory/validation';
 

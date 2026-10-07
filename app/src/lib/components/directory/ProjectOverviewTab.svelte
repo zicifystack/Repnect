@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
-	import { Sparkles, MapPin, Tag, GitPullRequest, ExternalLink, Code2 } from '@lucide/svelte';
+	import { Sparkles, MapPin, Tag, GitPullRequest, ExternalLink } from '@lucide/svelte';
 	import { Card, CardHeader, CardTitle, CardContent } from '$lib/components/ui/card';
 	import { Badge } from '$lib/components/ui/badge';
 	import Button from '$lib/components/ui/Button.svelte';

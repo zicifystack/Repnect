@@ -24,7 +24,6 @@
 	let loading = $state(false);
 	let error = $state('');
 	let successMsg = $state('');
-	let lastFetchedRepo = $state('');
 
 	async function fetchDetails() {
 		const query = repo.trim();

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 
-	// eslint-disable-next-line no-useless-assignment -- $bindable default is read via the parent's bind:
+	// eslint-disable-next-line no-useless-assignment, @typescript-eslint/no-unused-vars -- $bindable default is read via the parent's bind:
 	let { siteKey, token = $bindable('') }: { siteKey: string; token?: string } = $props();
 
 	const SRC = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';

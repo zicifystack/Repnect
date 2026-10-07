@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
-	import { Upload, CheckCircle2, AlertCircle } from '@lucide/svelte';
+	import { CheckCircle2, AlertCircle } from '@lucide/svelte';
 	import Seo from '$lib/components/seo/Seo.svelte';
 	import Button from '$lib/components/ui/Button.svelte';
-	import { Card, CardHeader, CardTitle, CardContent } from '$lib/components/ui/card';
+	import { Card } from '$lib/components/ui/card';
 	import * as Breadcrumb from '$lib/components/ui/breadcrumb';
 	import SubmitRepoAutofill from '$lib/components/directory/SubmitRepoAutofill.svelte';
 	import SubmitYamlPreview from '$lib/components/directory/SubmitYamlPreview.svelte';

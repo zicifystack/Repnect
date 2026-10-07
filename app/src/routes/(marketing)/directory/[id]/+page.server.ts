@@ -40,7 +40,7 @@ export const load: PageServerLoad = async ({ params, platform, cookies }) => {
 		voteStats = await getVoteStats(ctx, params.id, voterId);
 	} catch {}
 
-	let relatedProjects: any[] = [];
+	let relatedProjects: DirectoryItem[] = [];
 	try {
 		const allItems = await listDirectoryItems(ctx);
 		const filtered = allItems

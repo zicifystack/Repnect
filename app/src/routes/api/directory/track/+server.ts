@@ -1,11 +1,7 @@
 import { json } from '@sveltejs/kit';
 import { createCtx } from '$lib/server/ctx';
 import { httpError } from '$lib/server/errors';
-import {
-	trackOutboundClick,
-	trackProjectView,
-	trackSearch
-} from '$lib/server/directory/analytics';
+import { trackOutboundClick, trackProjectView, trackSearch } from '$lib/server/directory/analytics';
 import type { RequestHandler } from './$types';
 
 export const POST: RequestHandler = async ({ request, platform }) => {

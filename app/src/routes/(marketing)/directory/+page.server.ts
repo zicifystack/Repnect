@@ -21,7 +21,7 @@ export const load: PageServerLoad = async ({ platform, url, cookies }) => {
 
 	const ctx = createCtx(platform);
 
-	let items: any[] = [];
+	let items: DirectoryItem[] = [];
 	try {
 		items = await listDirectoryItems(ctx, {
 			search,
@@ -36,7 +36,8 @@ export const load: PageServerLoad = async ({ platform, url, cookies }) => {
 	} catch {}
 
 	const voterId = cookies.get('voter_id');
-	let itemsWithVotes: any[] = items;
+	let itemsWithVotes: (DirectoryItem & { score?: number; userVote?: 'up' | 'down' | null })[] =
+		items;
 	try {
 		itemsWithVotes = await Promise.all(
 			items.map(async (item) => {

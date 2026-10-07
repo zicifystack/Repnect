@@ -65,21 +65,14 @@ export async function trackOutboundClick(
 	});
 }
 
-export async function trackSearch(
-	ctx: Ctx,
-	query: string,
-	resultCount: number
-): Promise<void> {
+export async function trackSearch(ctx: Ctx, query: string, resultCount: number): Promise<void> {
 	await ctx.analytics.recordMetric('searches:total');
 	await ctx.analytics.capture('directory.searched', {
 		properties: { query, resultCount }
 	});
 }
 
-export async function getProjectMetrics(
-	ctx: Ctx,
-	projectId: string
-): Promise<ProjectMetrics> {
+export async function getProjectMetrics(ctx: Ctx, projectId: string): Promise<ProjectMetrics> {
 	const views = await ctx.analytics.getMetric(`views:${projectId}`);
 	const clicks = await ctx.analytics.getMetric(`clicks:${projectId}`);
 	return { views, clicks };

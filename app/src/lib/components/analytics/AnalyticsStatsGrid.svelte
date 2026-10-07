@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { FolderGit2, MapPin, Star, CheckCircle2, GitPullRequest, Code2 } from '@lucide/svelte';
+	import { FolderGit2, Star, GitPullRequest, Code2 } from '@lucide/svelte';
 	import { Card, CardHeader, CardTitle, CardContent } from '$lib/components/ui/card';
 	import { Badge } from '$lib/components/ui/badge';
 

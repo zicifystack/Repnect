@@ -22,15 +22,15 @@
 	"scripts": {
 		"dev": "node scripts/ensure-dev-vars.mjs && vite dev",
 		"build": "vite build",
-		"preview": "bun run build && wrangler dev --test-scheduled",
-		"prepare": "git config core.hooksPath .githooks 2>/dev/null || true; (svelte-kit sync && bun run cf-typegen && bun run i18n:compile) || echo ''",
-		"check": "bun run cf-typegen && bun run i18n:compile && svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+		"preview": "pnpm build && wrangler dev --test-scheduled",
+		"prepare": "git config core.hooksPath .githooks 2>/dev/null || true; (svelte-kit sync && pnpm cf-typegen && pnpm i18n:compile) || echo ''",
+		"check": "pnpm cf-typegen && pnpm i18n:compile && svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:invariants": "node scripts/check-invariants.mjs",
 		"check:secrets": "node scripts/check-secrets.mjs",
 		"i18n:compile": "paraglide-js compile --project ./project.inlang --outdir ./src/lib/paraglide",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
-		"deploy": "bun run build && wrangler deploy",
-		"deploy:canary": "bun run build && wrangler versions upload",
+		"deploy": "pnpm build && wrangler deploy",
+		"deploy:canary": "pnpm build && wrangler versions upload",
 		"deploy:promote": "wrangler versions deploy",
 		"deploy:rollback": "wrangler rollback",
 		"deployments": "wrangler deployments list",
@@ -39,7 +39,7 @@
 		"lint": "prettier --check . && eslint .",
 		"format": "prettier --write .",
 		"test:unit": "vitest",
-		"test": "node scripts/ensure-dev-vars.mjs && bun run db:migrate && bun run test:unit --run",
+		"test": "node scripts/ensure-dev-vars.mjs && pnpm db:migrate && pnpm test:unit --run",
 		"test:e2e": "playwright test",
 		"test:smoke": "playwright test --config=playwright.smoke.config.ts",
 		"db:up": "docker compose -f compose.yaml --project-directory .. up -d --wait",
@@ -99,11 +99,11 @@
 		"postgres": "^3.4.9",
 		"posthog-js": "^1.398.0",
 		"qrcode": "^1.5.4",
-		"svelte-sonner": "^1.2.1",
 		"sveltekit-superforms": "^2.30.2",
 		"tailwind-merge": "^3.6.0",
 		"tailwind-variants": "^3.3.1",
 		"workers-ai-provider": "^4.0.0",
 		"zod": "^4.4.3"
-	}
+	},
+	"packageManager": "pnpm@10.5.2"
 }

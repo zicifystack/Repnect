@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
-	import { Globe, ExternalLink, CheckCircle2, Copy, Check, Code, Share2 } from '@lucide/svelte';
+	import { Globe, ExternalLink, CheckCircle2, Copy, Check, Share2 } from '@lucide/svelte';
 	import { Card, CardHeader, CardTitle, CardContent } from '$lib/components/ui/card';
 	import { Badge } from '$lib/components/ui/badge';
 	import Button from '$lib/components/ui/Button.svelte';
