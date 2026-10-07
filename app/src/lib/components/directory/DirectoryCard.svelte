@@ -97,9 +97,16 @@
 	</div>
 
 	<div class="mt-5 flex items-center justify-between border-t border-border pt-3.5 text-xs">
-		<Badge variant="secondary" class="capitalize font-medium">
-			{item.category}
-		</Badge>
+		<div class="flex items-center gap-1.5 flex-wrap">
+			<Badge variant="secondary" class="capitalize font-medium">
+				{item.category}
+			</Badge>
+			{#if item.primary_language}
+				<Badge variant="outline" class="font-medium text-[11px] py-0">
+					{item.primary_language}
+				</Badge>
+			{/if}
+		</div>
 
 		<div class="flex items-center gap-1.5">
 			{#if item.github_repo}

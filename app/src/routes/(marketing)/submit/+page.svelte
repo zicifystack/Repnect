@@ -18,6 +18,7 @@
 	let websiteUrl = $state('');
 	let logoUrl = $state('');
 	let githubRepo = $state('');
+	let primaryLanguage = $state('');
 	let category = $state('developer-tools');
 	let tags = $state('');
 	let locationCity = $state('Lagos');
@@ -38,6 +39,9 @@
 			websiteUrl = details.websiteUrl;
 		}
 		githubRepo = details.fullName;
+		if (details.language) {
+			primaryLanguage = details.language;
+		}
 		if (details.tags.length > 0) {
 			tags = details.tags.join(', ');
 		}
@@ -104,9 +108,7 @@
 name: "${name || 'My Project'}"
 description: "${description.replace(/"/g, '\\"') || 'Project description'}"
 website_url: ${websiteUrl || 'https://example.com'}
-${logoUrl ? `logo_url: ${logoUrl}` : ''}
-${githubRepo ? `github_repo: ${githubRepo}` : ''}
-category: ${category}
+${logoUrl ? `logo_url: ${logoUrl}\n` : ''}${githubRepo ? `github_repo: ${githubRepo}\n` : ''}${primaryLanguage ? `primary_language: ${primaryLanguage}\n` : ''}category: ${category}
 tags: [${
 		tags
 			? tags
@@ -261,6 +263,19 @@ updated_at: ${new Date().toISOString()}`);
 								bind:value={githubRepo}
 							/>
 						</div>
+					</div>
+
+					<div class="space-y-1.5">
+						<label for="primary_language" class="text-xs font-semibold text-foreground"
+							>Primary Language</label
+						>
+						<input
+							id="primary_language"
+							name="primary_language"
+							placeholder="e.g. TypeScript, Python, Go, Rust"
+							class="w-full rounded-lg border border-input bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-hidden focus:ring-2 focus:ring-ring"
+							bind:value={primaryLanguage}
+						/>
 					</div>
 
 					<div class="space-y-1.5">

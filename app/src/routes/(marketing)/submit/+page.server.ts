@@ -58,6 +58,7 @@ export const actions: Actions = {
 			website_url: normalizeUrl(formData.get('website_url')) || '',
 			logo_url: normalizeUrl(formData.get('logo_url')) || '',
 			github_repo: normalizeGithub(formData.get('github_repo')) || '',
+			primary_language: String(formData.get('primary_language') || '').trim(),
 			category: formData.get('category'),
 			tags,
 			location_city: String(formData.get('location_city') || '').trim(),

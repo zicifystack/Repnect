@@ -83,6 +83,7 @@ export const directoryItemSchema = z.object({
 		})
 		.optional()
 		.or(z.literal('')),
+	primary_language: z.string().max(50).optional().or(z.literal('')),
 	category: z.enum(CATEGORIES),
 	tags: z.array(z.string().min(1).max(30)).default([]),
 	location_city: z.string().min(2).max(100),

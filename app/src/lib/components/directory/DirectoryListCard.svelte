@@ -50,6 +50,11 @@
 				<Badge variant="secondary" class="text-[11px] font-medium capitalize py-0">
 					{item.category}
 				</Badge>
+				{#if item.primary_language}
+					<Badge variant="outline" class="text-[11px] font-medium py-0">
+						{item.primary_language}
+					</Badge>
+				{/if}
 			</div>
 
 			<p class="mt-0.5 line-clamp-1 text-xs text-muted-foreground">
