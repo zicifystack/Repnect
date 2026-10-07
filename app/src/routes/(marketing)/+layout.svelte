@@ -15,8 +15,7 @@
 	const navLinks = [
 		{ href: resolve('/directory'), label: 'Directory' },
 		{ href: resolve('/directory/analytics'), label: 'Analytics' },
-		{ href: resolve('/submit'), label: 'Submit' },
-		{ href: resolve('/blog'), label: m.blog_short() }
+		{ href: resolve('/submit'), label: 'Submit' }
 	];
 </script>
 
@@ -27,58 +26,46 @@
 				{SITE.name}
 			</a>
 
-			<div class="hidden items-center gap-4 text-sm sm:flex">
+			<div class="hidden items-center gap-6 text-sm font-medium sm:flex">
 				{#each navLinks as link (link.href)}
-					<a href={link.href} class="text-muted-foreground hover:text-foreground">{link.label}</a>
+					<a href={link.href} class="text-muted-foreground transition-colors hover:text-foreground">
+						{link.label}
+					</a>
 				{/each}
 				<ThemeToggle />
-				<a href={resolve('/login')} class="text-muted-foreground hover:text-foreground"
-					>{m.sign_in()}</a
-				>
-				<Button href={resolve('/signup')} size="sm">
-					{m.get_started()}
-				</Button>
 			</div>
 
-			<button
-				type="button"
-				class="flex h-10 w-10 items-center justify-center rounded text-muted-foreground hover:bg-muted sm:hidden"
-				aria-label={menuOpen ? m.menu_close() : m.menu_open()}
-				aria-expanded={menuOpen}
-				aria-controls="mobile-menu"
-				onclick={() => (menuOpen = !menuOpen)}
-			>
-				{#if menuOpen}
-					<X class="h-6 w-6" aria-hidden="true" />
-				{:else}
-					<Menu class="h-6 w-6" aria-hidden="true" />
-				{/if}
-			</button>
+			<div class="flex items-center gap-2 sm:hidden">
+				<ThemeToggle />
+				<button
+					type="button"
+					class="flex h-10 w-10 items-center justify-center rounded text-muted-foreground hover:bg-muted"
+					aria-label={menuOpen ? m.menu_close() : m.menu_open()}
+					aria-expanded={menuOpen}
+					aria-controls="mobile-menu"
+					onclick={() => (menuOpen = !menuOpen)}
+				>
+					{#if menuOpen}
+						<X class="h-6 w-6" aria-hidden="true" />
+					{:else}
+						<Menu class="h-6 w-6" aria-hidden="true" />
+					{/if}
+				</button>
+			</div>
 		</nav>
 
 		{#if menuOpen}
 			<div id="mobile-menu" class="border-t border-border sm:hidden">
 				<div class="mx-auto flex max-w-5xl flex-col gap-1 px-6 py-3 text-sm">
-					<div class="px-2 py-1"><ThemeToggle /></div>
 					{#each navLinks as link (link.href)}
 						<a
 							href={link.href}
-							class="rounded px-2 py-2.5 text-muted-foreground hover:bg-muted"
+							class="rounded px-2 py-2.5 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
 							onclick={() => (menuOpen = false)}
 						>
 							{link.label}
 						</a>
 					{/each}
-					<a
-						href={resolve('/login')}
-						class="rounded px-2 py-2.5 text-muted-foreground hover:bg-muted"
-						onclick={() => (menuOpen = false)}
-					>
-						{m.sign_in()}
-					</a>
-					<Button href={resolve('/signup')} class="mt-1 w-full" onclick={() => (menuOpen = false)}>
-						{m.get_started()}
-					</Button>
 				</div>
 			</div>
 		{/if}
