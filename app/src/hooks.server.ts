@@ -27,16 +27,21 @@ const handleAuth: Handle = async ({ event, resolve }) => {
 	const env = workerEnv(event);
 	if (building || !env) return resolve(event);
 
-	const auth = createAuth(env, event.url.origin, {
-		getRequestEvent,
-		waitUntil: event.platform?.ctx?.waitUntil?.bind(event.platform.ctx)
-	});
-	const sessionData = await auth.api.getSession({ headers: event.request.headers });
-	if (sessionData) {
-		event.locals.user = sessionData.user;
-		event.locals.session = sessionData.session;
+	try {
+		const auth = createAuth(env, event.url.origin, {
+			getRequestEvent,
+			waitUntil: event.platform?.ctx?.waitUntil?.bind(event.platform.ctx)
+		});
+		const sessionData = await auth.api.getSession({ headers: event.request.headers });
+		if (sessionData) {
+			event.locals.user = sessionData.user;
+			event.locals.session = sessionData.session;
+		}
+		return await svelteKitHandler({ event, resolve, auth, building });
+	} catch (e) {
+		console.warn({ event: 'auth.init_failed' }, e);
+		return resolve(event);
 	}
-	return svelteKitHandler({ event, resolve, auth, building });
 };
 
 const handleParaglide: Handle = ({ event, resolve }) =>
@@ -61,17 +66,21 @@ const handleRateLimit: Handle = async ({ event, resolve }) => {
 	if (building) return resolve(event);
 
 	const limiter = workerEnv(event)?.RATE_LIMITER;
-	if (!limiter) return resolve(event);
+	if (!limiter || typeof limiter.limit !== 'function') return resolve(event);
 
 	if (event.url.pathname.startsWith('/api/webhooks/')) return resolve(event);
 
-	const key = event.request.headers.get('cf-connecting-ip') ?? 'unknown';
-	const { success } = await limiter.limit({ key });
-	if (!success) {
-		return Response.json(
-			{ message: 'Too many requests', code: 'rate_limited' },
-			{ status: 429, headers: { 'retry-after': '60' } }
-		);
+	try {
+		const key = event.request.headers.get('cf-connecting-ip') ?? 'unknown';
+		const { success } = await limiter.limit({ key });
+		if (!success) {
+			return Response.json(
+				{ message: 'Too many requests', code: 'rate_limited' },
+				{ status: 429, headers: { 'retry-after': '60' } }
+			);
+		}
+	} catch {
+		return resolve(event);
 	}
 	return resolve(event);
 };

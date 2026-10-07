@@ -277,9 +277,21 @@ export function createWorkerCtx(env: Env, executionCtx?: App.Platform['ctx']): C
 	const r2Url = safeProp<string>(env, 'R2_PUBLIC_URL');
 	const limiter = safeProp<Env['RATE_LIMITER']>(env, 'RATE_LIMITER');
 
-	const db = hyperdrive
-		? make(hyperdrive.connectionString)
-		: (null as unknown as ReturnType<typeof createDb>);
+	let db: any = null;
+	let dbCached: any = null;
+	if (hyperdrive && typeof hyperdrive.connectionString === 'string') {
+		try {
+			db = make(hyperdrive.connectionString);
+		} catch {}
+	}
+	if (hyperdriveCached && typeof hyperdriveCached.connectionString === 'string') {
+		try {
+			dbCached = make(hyperdriveCached.connectionString);
+		} catch {}
+	} else {
+		dbCached = db;
+	}
+
 	const storage = createStorage(r2, r2Url);
 	const store = createKvStore(kv);
 
